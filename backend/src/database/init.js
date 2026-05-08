@@ -1,4 +1,5 @@
 const db = require('./database');
+const bcrypt = require('bcryptjs');
 
 async function inicializarBanco() {
   try {
@@ -63,21 +64,26 @@ async function inicializarBanco() {
      SELECT * FROM usuarios
     `);
 
-    console.log('Usuarios encontrados:', usuarios.length);
     if (usuarios.length === 0) {
 
-      const dataCriacao = new Date().toISOString();
+    const dataCriacao = new Date().toISOString();
 
-      await db.run(`
+    const senhaDeveloper1 =
+        await bcrypt.hash('teste@1', 10);
+
+    const senhaDeveloper2 =
+        await bcrypt.hash('teste@12', 10);
+
+    await db.run(`
     INSERT INTO usuarios (nome, email, senha, criadoEm)
     VALUES (?, ?, ?, ?)
-    `, ['developer1', 'developer1@gmail.com', 'teste@1', dataCriacao]);
+    `, ['developer1', 'developer1@gmail.com', senhaDeveloper1, dataCriacao]);
 
 
-      await db.run(`
+    await db.run(`
     INSERT INTO usuarios (nome, email, senha, criadoEm)
     VALUES (?, ?, ?, ?)
-    `, ['developer2', 'developer2@gmail.com', 'teste@12', dataCriacao]);
+    `, ['developer2', 'developer2@gmail.com', senhaDeveloper2, dataCriacao]);
       console.log('Usuário padrão criado.');
     }
     // --------------------

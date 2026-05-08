@@ -1,10 +1,9 @@
 const jwt = require('jsonwebtoken');
+const bcrypt = require('bcryptjs');
+const db = require('../database/database');
+const authConfig =require('../config/auth');
 
-const db =
-    require('../database/database');
 
-const authConfig =
-    require('../config/auth');
 
 async function login(req, res) {
     try {
@@ -17,19 +16,22 @@ async function login(req, res) {
         }
 
         const usuario = await db.get(`
-            SELECT
-                id,
-                nome,
-                email
+            SELECT *
             FROM usuarios
             WHERE email = ?
-            AND senha = ?
-        `, [email, senha]);
+            `, [email]);
 
-        if (!usuario) {
-            return res.status(401).json({
-                erro: 'Email ou senha inválidos'
-            });
+
+        const senhaValida =
+        await bcrypt.compare(
+            senha,
+            usuario.senha
+        );
+
+        if (!usuario || !senhaValida) {
+        return res.status(401).json({
+            erro: 'Email ou senha inválidos'
+        });
         }
 
         // gera token
