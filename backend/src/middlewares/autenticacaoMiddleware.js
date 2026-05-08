@@ -23,7 +23,7 @@ function autenticacao(req, res, next) {
             authConfig.jwt.secret
         );
 
-        req.usuarioId = decoded.id;
+        req.usuario = decoded;
 
         next();
 

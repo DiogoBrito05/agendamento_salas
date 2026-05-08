@@ -14,17 +14,15 @@ async function listarAgendamentos() {
     return await db.all(sql);
 }
 
-async function criarAgendamento(dados) {
+async function criarAgendamento(dados, usuarioIdC, usuarioNomeC) {
     const {
         salaId,
         titulo,
         inicio,
-        fim,
-        usuarioId,
-        usuarioNome
+        fim
     } = dados;
 
-    if (!salaId || !titulo || !inicio || !fim || !usuarioId || !usuarioNome) {
+    if (!salaId || !titulo || !inicio || !fim) {
         throw new Error('Campos obrigatórios não enviados');
     }
 
@@ -87,15 +85,15 @@ async function criarAgendamento(dados) {
         titulo,
         inicio,
         fim,
-        usuarioId,
-        usuarioNome,
+        usuarioIdC,
+        usuarioNomeC,
         new Date().toISOString()
     ]);
 
     return resultado;
 }
 
-async function cancelarAgendamento(id, usuarioId) {
+async function cancelarAgendamento(id, usuarioIdC) {
 
     // busca agendamento
     const sqlBusca = `
@@ -111,7 +109,7 @@ async function cancelarAgendamento(id, usuarioId) {
         throw new Error('Agendamento não encontrado');
     }
 
-    if (agendamento.usuarioId !== usuarioId) {
+    if (agendamento.usuarioId != usuarioIdC) {
         throw new Error(
             'Você não pode cancelar este agendamento'
         );

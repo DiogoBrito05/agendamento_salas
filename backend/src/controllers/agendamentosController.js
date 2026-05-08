@@ -18,8 +18,7 @@ async function listar(req, res) {
 
 async function criar(req, res) {
   try {
-    const resultado =
-      await agendamentosService.criarAgendamento(req.body);
+    const resultado = await agendamentosService.criarAgendamento(req.body, req.usuario.id, req.usuario.nome);
 
     res.status(201).json({
       mensagem: 'Agendamento criado com sucesso',
@@ -39,8 +38,7 @@ async function cancelar(req, res) {
   try {
 
     const { id } = req.params;
-
-    const { usuarioId } = req.body;
+    const usuarioId = req.usuario.id;
 
     await agendamentosService.cancelarAgendamento(
       id,

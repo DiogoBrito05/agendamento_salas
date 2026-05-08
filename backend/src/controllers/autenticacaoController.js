@@ -38,7 +38,8 @@ async function login(req, res) {
         const token = jwt.sign(
             {
                 id: usuario.id,
-                nome: usuario.nome
+                nome: usuario.nome,
+                email: usuario.email
             },
             authConfig.jwt.secret,
             {
