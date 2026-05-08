@@ -4,6 +4,16 @@ async function inicializarBanco() {
   try {
 
     await db.run(`
+      CREATE TABLE IF NOT EXISTS usuarios (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        nome TEXT NOT NULL,
+        email TEXT NOT NULL UNIQUE,
+        senha TEXT NOT NULL,
+        criadoEm TEXT NOT NULL
+      )
+    `);
+
+    await db.run(`
       CREATE TABLE IF NOT EXISTS salas (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         nome TEXT NOT NULL UNIQUE
@@ -25,6 +35,7 @@ async function inicializarBanco() {
 
     console.log('Tabelas criadas/verificadas.');
 
+    // --------------------
     // verifica se já existem salas
     const salas = await db.all(`
       SELECT * FROM salas
@@ -47,7 +58,29 @@ async function inicializarBanco() {
 
       console.log('Salas padrão inseridas.');
     }
+    // --------------------
+    const usuarios = await db.all(`
+     SELECT * FROM usuarios
+    `);
 
+    console.log('Usuarios encontrados:', usuarios.length);
+    if (usuarios.length === 0) {
+
+      const dataCriacao = new Date().toISOString();
+
+      await db.run(`
+    INSERT INTO usuarios (nome, email, senha, criadoEm)
+    VALUES (?, ?, ?, ?)
+    `, ['developer1', 'developer1@gmail.com', 'teste@1', dataCriacao]);
+
+
+      await db.run(`
+    INSERT INTO usuarios (nome, email, senha, criadoEm)
+    VALUES (?, ?, ?, ?)
+    `, ['developer2', 'developer2@gmail.com', 'teste@12', dataCriacao]);
+      console.log('Usuário padrão criado.');
+    }
+    // --------------------
 
   } catch (erro) {
     console.error('Erro ao inicializar banco:', erro);
