@@ -8,7 +8,9 @@ const hours = ("0" + (new Date().getHours())).slice(-2);
 const minutes = ("0" + (new Date().getMinutes())).slice(-2);
 const seconds = ("0" + (new Date().getSeconds())).slice(-2);
 const datahora = date + '/' + month + '/' + year + ' ' + hours + ":" + minutes + ":" + seconds;
-const agendamentosRoutes = require('./routes/agendamentos');
+
+const agendamentosRoutes = require('./routes/agendamentosRoutes');
+const salasRoutes = require('./routes/salasRoutes');
 
 require('./database/init');
 
@@ -25,6 +27,7 @@ app.get('/', (req, res) => {
 
 // Rotas ------------
 app.use('/agendamentos', agendamentosRoutes);
+app.use('/salas', salasRoutes);
 
 const PORT = 3000;
 
