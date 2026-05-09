@@ -84,6 +84,7 @@ export default defineConfig((/* ctx */) => {
       // directives: [],
 
       // Quasar plugins
+      lang: 'pt-BR',
       plugins:  ['Notify']
     },
 
