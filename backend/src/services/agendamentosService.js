@@ -1,5 +1,9 @@
 const db = require('../database/database');
 
+const {
+  converterData
+} = require('../utils/data')
+
 async function listarAgendamentos() {
     const sql = `
     SELECT
@@ -36,8 +40,21 @@ async function criarAgendamento(dados, usuarioIdC, usuarioNomeC) {
     }
 
     const agora = new Date();
-    const dataInicio = new Date(inicio);
-    const dataFim = new Date(fim);
+     const dataInicio = new Date(inicio);
+     const dataFim = new Date(fim);
+
+
+//     const inicioConvertido =
+//   converterData(inicio)
+
+    const fimConvertido =
+    converterData(fim)
+
+    const dataInicio =
+    new Date(inicioConvertido)
+
+    const dataFim =
+    new Date(fimConvertido)
 
 
     if (dataInicio < agora) {
