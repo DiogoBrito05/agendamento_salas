@@ -26,8 +26,9 @@ async function inicializarBanco() {
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         salaId INTEGER NOT NULL,
         titulo TEXT,
-        inicio TEXT NOT NULL,
-        fim TEXT NOT NULL,
+        data DATETIME NOT NULL,
+        horaInicio TEXT NOT NULL,
+        horaFim TEXT NOT NULL,
         usuarioId TEXT NOT NULL,
         usuarioNome TEXT NOT NULL,
         criadoEm TEXT NOT NULL

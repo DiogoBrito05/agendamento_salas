@@ -1,8 +1,5 @@
 const db = require('../database/database');
 
-const {
-  converterData
-} = require('../utils/data')
 
 async function listarAgendamentos() {
     const sql = `
@@ -18,16 +15,33 @@ async function listarAgendamentos() {
     return await db.all(sql);
 }
 
+function horaValida(hora) {
+
+    const regex =
+        /^([01]\d|2[0-3]):([0-5]\d)$/
+
+    return regex.test(hora)
+
+}
+
 async function criarAgendamento(dados, usuarioIdC, usuarioNomeC) {
     const {
         salaId,
         titulo,
-        inicio,
-        fim
+        data,
+        horaInicio,
+        horaFim
     } = dados;
 
-    if (!salaId || !titulo || !inicio || !fim) {
+    console.log('Dados recebidos para criar agendamento:', dados);
+    if (!salaId || !titulo || !data || !horaInicio || !horaFim) {
         throw new Error('Campos obrigatórios não enviados');
+    }
+
+    if (!horaValida(horaInicio) || !horaValida(horaFim) ) {
+        throw new Error(
+            'Horário inválido'
+        )
     }
 
     const sala = await db.get(`
@@ -40,21 +54,9 @@ async function criarAgendamento(dados, usuarioIdC, usuarioNomeC) {
     }
 
     const agora = new Date();
-     const dataInicio = new Date(inicio);
-     const dataFim = new Date(fim);
+    const dataInicio = new Date(data + ' ' + horaInicio);
+    const dataFim = new Date(data + ' ' + horaFim);
 
-
-//     const inicioConvertido =
-//   converterData(inicio)
-
-    const fimConvertido =
-    converterData(fim)
-
-    const dataInicio =
-    new Date(inicioConvertido)
-
-    const dataFim =
-    new Date(fimConvertido)
 
 
     if (dataInicio < agora) {
@@ -69,15 +71,15 @@ async function criarAgendamento(dados, usuarioIdC, usuarioNomeC) {
     SELECT * FROM agendamentos
     WHERE salaId = ?
     AND (
-      inicio < ?
-      AND fim > ?
+      horaInicio < ?
+      AND horaFim > ?
     )
    `;
 
     const conflitos = await db.all(sqlConflito, [
         salaId,
-        fim,
-        inicio
+        horaFim,
+        horaInicio
     ]);
 
     if (conflitos.length > 0) {
@@ -88,20 +90,22 @@ async function criarAgendamento(dados, usuarioIdC, usuarioNomeC) {
     INSERT INTO agendamentos (
       salaId,
       titulo,
-      inicio,
-      fim,
+      data,
+      horaInicio,
+      horaFim,
       usuarioId,
       usuarioNome,
       criadoEm
     )
-    VALUES (?, ?, ?, ?, ?, ?, ?)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?)
     `;
 
     const resultado = await db.run(sql, [
         salaId,
         titulo,
-        inicio,
-        fim,
+        data,
+        horaInicio,
+        horaFim,
         usuarioIdC,
         usuarioNomeC,
         new Date().toISOString()
@@ -109,6 +113,8 @@ async function criarAgendamento(dados, usuarioIdC, usuarioNomeC) {
 
     return resultado;
 }
+
+
 
 async function cancelarAgendamento(id, usuarioIdC) {
 
