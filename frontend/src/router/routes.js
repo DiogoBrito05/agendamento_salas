@@ -1,18 +1,38 @@
 const routes = [
+
+  // LOGIN
+  {
+    path: '/login',
+    component: () =>
+      import('pages/LoginPage.vue')
+  },
+
+  // SISTEMA PROTEGIDO
   {
     path: '/',
-    component: () => import('layouts/MainLayout.vue'),
+    component: () =>
+      import('layouts/MainLayout.vue'),
+
+    meta: {
+      requiresAuth: true
+    },
+
     children: [
-      { path: '', component: () => import('pages/IndexPage.vue') }
+      {
+        path: '',
+        component: () =>
+          import('pages/IndexPage.vue')
+      }
     ]
   },
 
-  // Always leave this as last one,
-  // but you can also remove it
+  // 404
   {
     path: '/:catchAll(.*)*',
-    component: () => import('pages/ErrorNotFound.vue')
+    component: () =>
+      import('pages/ErrorNotFound.vue')
   }
+
 ]
 
 export default routes
