@@ -1,5 +1,7 @@
 <template>
+
   <q-page class="q-pa-lg">
+
     <!-- TÍTULO -->
     <div class="text-h4">
       Dashboard
@@ -11,91 +13,207 @@
 
     <!-- BOTÃO -->
     <div class="q-mt-lg">
+
       <q-btn
         label="Novo Agendamento"
         color="primary"
         icon="add"
         @click="abrirModal"
       />
+
     </div>
 
     <!-- SALAS -->
     <div class="row q-col-gutter-md q-mt-lg">
+
       <div
         v-for="sala in salas"
         :key="sala.id"
         class="col-12 col-md-4"
       >
-        <q-card>
+
+        <q-card class="rounded-borders">
+
           <q-card-section>
+
             <div class="text-h6">
               {{ sala.nome }}
             </div>
-            <div class="text-subtitle2">
-              Sala disponível para agendamento
+
+            <div class="q-mt-sm">
+
+              <q-badge
+                :color="
+                  salaEstaOcupada(sala.id)
+                    ? 'negative'
+                    : 'positive'
+                "
+              >
+
+                {{
+                  salaEstaOcupada(sala.id)
+                    ? 'OCUPADA'
+                    : 'DISPONÍVEL'
+                }}
+
+              </q-badge>
+
             </div>
+
+            <div
+              v-if="proximoAgendamento(sala.id)"
+              class="q-mt-md"
+            >
+
+              <div class="text-subtitle2">
+                Próximo agendamento:
+              </div>
+
+              <div class="text-weight-bold">
+
+                {{
+                  proximoAgendamento(sala.id)
+                    .titulo
+                }}
+
+              </div>
+
+              <div>
+
+                {{
+                  proximoAgendamento(sala.id)
+                    .data
+                }}
+
+                às
+
+                {{
+                  proximoAgendamento(sala.id)
+                    .horaInicio
+                }}
+
+              </div>
+
+            </div>
+
           </q-card-section>
+
         </q-card>
+
       </div>
+
     </div>
 
     <!-- AGENDAMENTOS -->
     <div class="q-mt-xl">
+
+      <CalendarioAgenda
+        :agendamentos="agendamentos"
+      />
+      
       <div class="text-h5 q-mb-md">
         Agendamentos
       </div>
 
       <div class="row q-col-gutter-md">
+
         <div
           v-for="agendamento in agendamentos"
           :key="agendamento.id"
           class="col-12 col-md-6"
         >
+
           <q-card>
+
             <q-card-section>
+
               <div class="text-h6">
                 {{ agendamento.titulo }}
               </div>
+
               <div class="text-subtitle2 q-mt-sm">
+
                 Sala:
                 {{ agendamento.salaNome }}
+
               </div>
+
               <div class="q-mt-sm">
-                Início:
-                {{ formatarData(agendamento.inicio) }}
+
+                Data:
+                {{ agendamento.data }}
+
               </div>
+
               <div>
-                Fim:
-                {{ formatarData(agendamento.fim) }}
+
+                Início:
+                {{ agendamento.horaInicio }}
+
               </div>
+
+              <div>
+
+                Fim:
+                {{ agendamento.horaFim }}
+
+              </div>
+
               <div class="q-mt-sm">
+
                 Criado por:
                 {{ agendamento.usuarioNome }}
+
               </div>
+
             </q-card-section>
 
             <q-card-actions align="right">
+
               <q-btn
                 color="negative"
                 label="Cancelar"
-                @click="cancelarAgendamento(agendamento.id)"
+                @click="
+                  cancelarAgendamento(
+                    agendamento.id
+                  )
+                "
               />
+
             </q-card-actions>
+
           </q-card>
+
         </div>
+
       </div>
+
     </div>
 
     <!-- MODAL -->
     <q-dialog v-model="modalAberto">
-      <q-card style="width: 500px">
-        <q-card-section>
-          <div class="text-h6">
-            Novo Agendamento
+
+      <q-card
+        style="
+          width: 550px;
+          max-width: 90vw;
+          border-radius: 12px;
+        "
+      >
+
+        <q-card-section class="row items-center">
+
+          <div class="text-h5 text-weight-medium">
+            Agendar uma sala
           </div>
+
         </q-card-section>
 
-        <q-card-section>
+        <q-separator />
+
+        <q-card-section class="q-pa-lg">
+
+          <!-- SALA -->
           <q-select
             v-model="form.salaId"
             :options="salas"
@@ -104,130 +222,343 @@
             emit-value
             map-options
             label="Sala"
+            dense
             outlined
-            class="q-mb-md"
+            class="q-mb-lg"
           />
 
+          <!-- TITULO -->
           <q-input
             v-model="form.titulo"
-            label="Título"
+            label="Descrição"
+            dense
             outlined
-            class="q-mb-md"
+            class="q-mb-lg"
           />
 
+          <!-- DATA -->
           <q-input
-            v-model="form.inicio"
-            label="Data/Hora Início"
+            v-model="form.data"
+            label="Data"
+            type="date"
+            dense
             outlined
-            class="q-mb-md"
-            type="datetime-local"
-            onkeydown="return false"
+            class="q-mb-lg"
+
             @click="$event.target.showPicker()"
           />
 
-          <q-input
-            v-model="form.fim"
-            label="Data/Hora Fim"
-            outlined
-            type="datetime-local"
-            onkeydown="return false"
-            @click="$event.target.showPicker()"
-          />
+          <!-- HORAS -->
+          <div class="row q-col-gutter-md">
+
+            <div class="col">
+
+              <q-input
+                v-model="form.horaInicio"
+                label="Hora início"
+                type="time"
+                dense
+                outlined
+
+                @click="$event.target.showPicker()"
+              />
+
+            </div>
+
+            <div class="col">
+
+              <q-input
+                v-model="form.horaFim"
+                label="Hora término"
+                type="time"
+                dense
+                outlined
+
+                @click="$event.target.showPicker()"
+              />
+
+            </div>
+
+          </div>
+
         </q-card-section>
 
-        <q-card-actions align="right">
+        <q-card-actions
+          align="right"
+          class="q-pa-md"
+        >
+
           <q-btn
             flat
-            label="Cancelar"
+            label="CANCELAR"
+            color="grey"
             v-close-popup
           />
+
           <q-btn
             color="primary"
-            label="Salvar"
+            text-color="white"
+            label="SALVAR"
             @click="salvarAgendamento"
           />
+
         </q-card-actions>
+
       </q-card>
+
     </q-dialog>
+
   </q-page>
+
 </template>
 
 <script setup>
-import { onMounted, ref } from 'vue'
-import { useQuasar } from 'quasar'
-import { formatarData } from 'src/utils/data'
-import salasService from 'src/services/salas.service'
-import agendamentosService from 'src/services/agendamentos.service'
+
+import {
+  onMounted,
+  ref
+} from 'vue'
+
+import { useQuasar }
+  from 'quasar'
+
+import salasService
+  from 'src/services/salas.service'
+
+import agendamentosService
+  from 'src/services/agendamentos.service'
+
+  import CalendarioAgenda
+  from 'src/components/CalendarioAgenda.vue'
 
 const salas = ref([])
 const agendamentos = ref([])
+
 const $q = useQuasar()
+
 const modalAberto = ref(false)
 
 const form = ref({
+
   salaId: null,
   titulo: '',
-  inicio: '',
-  fim: ''
+  data: '',
+  horaInicio: '',
+  horaFim: ''
+
 })
 
 async function carregarSalas() {
+
   try {
-    salas.value = await salasService.listar()
+
+    salas.value =
+      await salasService.listar()
+
   } catch (erro) {
+
     console.error(erro)
+
   }
+
 }
 
 async function carregarAgendamentos() {
+
   try {
-    agendamentos.value = await agendamentosService.listar()
+
+    agendamentos.value =
+      await agendamentosService.listar()
+
   } catch (erro) {
+
     console.error(erro)
+
   }
+
 }
 
 function abrirModal() {
+
   modalAberto.value = true
+
 }
 
 async function salvarAgendamento() {
+
   try {
-    await agendamentosService.criar(form.value)
+
+    if (
+      form.value.horaInicio
+      >=
+      form.value.horaFim
+    ) {
+
+      $q.notify({
+
+        type: 'negative',
+
+        message:
+          'Hora final deve ser maior'
+
+      })
+
+      return
+
+    }
+
+    await agendamentosService.criar(
+      form.value
+    )
+
     modalAberto.value = false
+
     await carregarAgendamentos()
 
     $q.notify({
+
       type: 'positive',
-      message: 'Agendamento criado com sucesso'
+
+      message:
+        'Agendamento criado com sucesso'
+
     })
 
     form.value = {
+
       salaId: null,
       titulo: '',
-      inicio: '',
-      fim: ''
+      data: '',
+      horaInicio: '',
+      horaFim: ''
+
     }
+
   } catch (erro) {
+
     console.error(erro)
+
     $q.notify({
+
       type: 'negative',
-      message: erro.response?.data?.erro || 'Erro ao criar agendamento'
+
+      message:
+        erro.response?.data?.erro
+        || 'Erro ao criar agendamento'
+
     })
+
   }
+
+}
+
+function salaEstaOcupada(salaId) {
+
+  const agora = new Date()
+
+  return agendamentos.value.some(
+    agendamento => {
+
+      const inicio =
+        new Date(
+          `${agendamento.data}T${agendamento.horaInicio}`
+        )
+
+      const fim =
+        new Date(
+          `${agendamento.data}T${agendamento.horaFim}`
+        )
+
+      return (
+        agendamento.salaId === salaId
+        &&
+        agora >= inicio
+        &&
+        agora <= fim
+      )
+
+    }
+  )
+
+}
+
+function proximoAgendamento(salaId) {
+
+  const agora = new Date()
+
+  const futuros =
+    agendamentos.value.filter(
+      agendamento => {
+
+        const inicio =
+          new Date(
+            `${agendamento.data}T${agendamento.horaInicio}`
+          )
+
+        return (
+          agendamento.salaId === salaId
+          &&
+          inicio > agora
+        )
+
+      }
+    )
+
+  futuros.sort((a, b) => {
+
+    return (
+      new Date(`${a.data}T${a.horaInicio}`)
+      -
+      new Date(`${b.data}T${b.horaInicio}`)
+    )
+
+  })
+
+  return futuros[0]
+
 }
 
 async function cancelarAgendamento(id) {
+
   try {
-    await agendamentosService.cancelar(id)
+
+    await agendamentosService
+      .cancelar(id)
+
     await carregarAgendamentos()
+
+    $q.notify({
+
+      type: 'positive',
+
+      message:
+        'Agendamento cancelado'
+
+    })
+
   } catch (erro) {
+
     console.error(erro)
+
+    $q.notify({
+
+      type: 'negative',
+
+      message:
+        erro.response?.data?.erro
+        || 'Erro ao cancelar'
+
+    })
+
   }
+
 }
 
 onMounted(() => {
+
   carregarSalas()
   carregarAgendamentos()
+
 })
+
 </script>
