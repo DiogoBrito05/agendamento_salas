@@ -4,6 +4,8 @@ import {
 
 import {
   createRouter,
+  createMemoryHistory,
+  createWebHistory,
   createWebHashHistory
 } from 'vue-router'
 
@@ -11,37 +13,47 @@ import routes from './routes'
 
 export default route(function () {
 
+  const createHistory =
+    process.env.SERVER
+      ? createMemoryHistory
+      : (
+          process.env.VUE_ROUTER_MODE
+            === 'history'
+            ? createWebHistory
+            : createWebHashHistory
+        )
+
   const Router = createRouter({
 
-    history:
-      createWebHashHistory(),
+    scrollBehavior: () => ({
+      left: 0,
+      top: 0
+    }),
 
-    routes
+    routes,
 
+    history: createHistory(
+      process.env.VUE_ROUTER_BASE
+    )
   })
 
-  Router.beforeEach((to) => {
+  // PROTEÇÃO
+  Router.beforeEach((to, from, next) => {
 
     const token =
       localStorage.getItem('token')
 
-    // rota protegida
     if (
       to.meta.requiresAuth
-      && !token
+      &&
+      !token
     ) {
 
-      return '/login'
+      return next('/login')
+
     }
 
-    // já autenticado
-    if (
-      to.path === '/login'
-      && token
-    ) {
-
-      return '/'
-    }
+    next()
 
   })
 

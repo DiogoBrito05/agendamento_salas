@@ -1,7 +1,13 @@
 <template>
 
   <div
-    class="window-height row justify-center items-center bg-grey-2"
+    class="
+      window-height
+      row
+      justify-center
+      items-center
+      bg-grey-2
+    "
   >
 
     <q-card
@@ -9,20 +15,33 @@
       class="q-pa-lg"
     >
 
+      <!-- TÍTULO -->
       <q-card-section class="text-center">
 
-        <div class="text-h4 text-weight-bold">
+        <div
+          class="
+            text-h4
+            text-weight-bold
+          "
+        >
           Agendamento de Salas
         </div>
 
-        <div class="text-subtitle1 q-mt-sm">
+        <div
+          class="
+            text-subtitle1
+            q-mt-sm
+          "
+        >
           Conecte-se
         </div>
 
       </q-card-section>
 
+      <!-- FORM -->
       <q-card-section>
 
+        <!-- EMAIL -->
         <q-input
           v-model="email"
           label="E-mail"
@@ -30,42 +49,48 @@
           class="q-mb-md"
         />
 
-      <q-input
-        v-model="senha"
-        label="Senha"
-        outlined
-        :type="mostrarSenha ? 'text' : 'password'"
-      >
+        <!-- SENHA -->
+        <q-input
+          v-model="senha"
+          label="Senha"
+          outlined
+          :type="
+            mostrarSenha
+              ? 'text'
+              : 'password'
+          "
+        >
 
-        <template v-slot:append>
+          <template #append>
 
-          <q-icon
-            :name="
-              mostrarSenha
-                ? 'visibility_off'
-                : 'visibility'
-            "
-            class="cursor-pointer"
-            @click="
-              mostrarSenha =
-              !mostrarSenha
-            "
-          />
+            <q-icon
+              :name="
+                mostrarSenha
+                  ? 'visibility_off'
+                  : 'visibility'
+              "
+              class="cursor-pointer"
+              @click="
+                mostrarSenha =
+                !mostrarSenha
+              "
+            />
 
-    </template>
+          </template>
 
         </q-input>
 
       </q-card-section>
 
+      <!-- BOTÃO -->
       <q-card-actions>
 
-     <q-btn
-        label="Entrar"
-        color="primary"
-        class="full-width"
-        @click.prevent="fazerLogin"
-     />
+        <q-btn
+          label="Entrar"
+          color="primary"
+          class="full-width"
+          @click="fazerLogin"
+        />
 
       </q-card-actions>
 
@@ -79,16 +104,22 @@
 
 import { ref } from 'vue'
 
-import { useRouter }
-  from 'vue-router'
+import {
+  useRouter
+} from 'vue-router'
 
-import { useQuasar } from 'quasar'
+import {
+  useQuasar
+} from 'quasar'
 
 import { api }
   from 'src/boot/axios'
 
-import { useAuthStore }
-  from 'src/stores/auth-store'
+import {
+  useAuthStore
+} from 'src/stores/auth-store'
+
+const router = useRouter()
 
 const $q = useQuasar()
 
@@ -96,50 +127,85 @@ const authStore =
   useAuthStore()
 
 const email = ref('')
+
 const senha = ref('')
-const mostrarSenha = ref(false)
+
+const mostrarSenha =
+  ref(false)
+
 async function fazerLogin() {
 
   try {
 
-    console.log('INICIO LOGIN')
+    console.log(
+      'INICIO LOGIN'
+    )
+
     const response =
-      await api.post('/auth/login', {
+      await api.post(
+        '/auth/login',
+        {
 
-        email: email.value,
-        senha: senha.value
+          email: email.value,
 
-      })
+          senha: senha.value
 
-      console.log(response.data)
+        }
+      )
 
+    console.log(
+      response.data
+    )
+
+    // STORE
     authStore.salvarLogin(
       response.data
     )
 
+    // TOKEN
     localStorage.setItem(
       'token',
       response.data.token
     )
 
+    // USUÁRIO
+    localStorage.setItem(
+      'usuario',
+
+      JSON.stringify(
+        response.data.usuario
+      )
+    )
+
+    // NOTIFICAÇÃO
     $q.notify({
+
       type: 'positive',
+
       message:
         'Login realizado com sucesso'
+
     })
 
-    window.location.href = '/#/'
+    // REDIRECIONA
+    router.push('/')
 
-      } catch (erro) {
+  } catch (erro) {
 
-        $q.notify({
-          type: 'negative',
-          message:
-            erro.response?.data?.erro
-            || 'Erro ao realizar login'
-        })
+    console.error(erro)
 
-      }
-    }
+    $q.notify({
+
+      type: 'negative',
+
+      message:
+        erro.response?.data?.erro
+        || 'Erro ao realizar login'
+
+    })
+
+  }
+
+}
 
 </script>
