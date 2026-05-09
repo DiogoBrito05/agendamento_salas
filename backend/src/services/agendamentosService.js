@@ -9,7 +9,7 @@ async function listarAgendamentos() {
     FROM agendamentos
      INNER JOIN salas
      ON salas.id = agendamentos.salaId
-    ORDER BY inicio ASC
+    ORDER BY data ASC, horaInicio ASC
   `;
 
     return await db.all(sql);
