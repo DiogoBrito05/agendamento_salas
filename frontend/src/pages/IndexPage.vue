@@ -239,6 +239,7 @@
 
 import {
   onMounted,
+  onUnmounted,
   ref
 } from 'vue'
 
@@ -257,6 +258,7 @@ import CalendarioAgenda
 
 const salas = ref([])
 const agendamentos = ref([])
+let intervalAtualizacao = null
 
 const $q = useQuasar()
 
@@ -445,7 +447,25 @@ function proximoAgendamento(salaId) {
 onMounted(() => {
 
   carregarSalas()
+
   carregarAgendamentos()
+
+  // Teste
+  intervalAtualizacao = setInterval(() => {
+
+    carregarSalas()
+
+    carregarAgendamentos()
+
+  }, 5000)
+
+})
+
+onUnmounted(() => {
+
+  clearInterval(
+    intervalAtualizacao
+  )
 
 })
 
