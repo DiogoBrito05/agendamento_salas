@@ -6,21 +6,35 @@ Sistema web desenvolvido para o gerenciamento de salas de reunião corporativas,
 
 Este projeto foi desenvolvido como solução para um **teste técnico para Desenvolvedor Fullstack (Vue 3, Quasar e Node.js)**, contemplando:
 
-## O projeto possui:
+##  Funcionalidades Implementadas
 
-*   Autenticação de usuários via JWT para segurança.
-*   Agendamento de salas com validações de conflito.
-*   Calendário interativo para visualização de reservas.
-*   Controle de disponibilidade e listagem dinâmica.
-*   Cancelamento de reuniões.
+### **Login de Usuário**
+*   Autenticação segura com JWT para mais segurança.
+*   Persistência de sessão e proteção de rotas.
+*   Funcionalidade de Logout.
 
-## Tecnologias Utilizadas
+### **Dashboard & Agendamentos**
+*   Listagem de salas com status em tempo real (**Disponível**, **Ocupada**, **Próximo Agendamento**).
+*   Criação e listagem dinâmica de reuniões.
+*   Filtro de agendamentos por sala.
+
+### **Calendário Interativo**
+*   Visualização Mensal, Semanal e Diária.
+*   Exibição detalhada dos horários das reuniões.
+
+### **Validações de Regra de Negócio**
+*   **Conflito de Horários:** Impede duas reuniões na mesma sala no mesmo horário.
+*   **Horários Coerentes:** Valida se a hora de início é inferior à hora de término.
+*   **Agendamento no Passado:** Bloqueia a criação de reuniões em datas/horários retroativos.
+*   **Cancelamento Restrito:** Apenas o usuário que criou a reunião tem permissão para cancelá-la.
+
+##  Tecnologias Utilizadas
 
 ### **Frontend**
-*   **Vue 3** (Composition API)
+*   **Vue 3**
 *   **Quasar Framework**
 *   **Vue Router**
-*   **Pinia** (Gerenciamento de estado)
+*   **Pinia** (Para Gerenciamento de estado)
 *   **Axios**
 *   **FullCalendar**
 
@@ -28,8 +42,24 @@ Este projeto foi desenvolvido como solução para um **teste técnico para Desen
 *   **Node.js**
 *   **Express**
 *   **JWT** (JSON Web Token)
-*   **BcryptJS**
+*   **BcryptJS** 
 
 ### **Banco de Dados**
 *   **SQLite**
+
+## Estrutura do Projeto
+
+### **Frontend**
+```text
+frontend/
+├── src/
+│   ├── assets/
+│   ├── boot/        # Configurações de plugins (Axios, etc)
+│   ├── components/  # Componentes reutilizáveis
+│   ├── layouts/     # Templates de página
+│   ├── pages/       # Telas do sistema
+│   ├── services/    # Integração com API
+│   └── stores/      # Estado global (Pinia)
+└── App.vue
+
 
