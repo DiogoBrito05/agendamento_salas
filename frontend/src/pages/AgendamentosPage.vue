@@ -2,7 +2,7 @@
 
   <q-page class="q-pa-lg">
 
-    <div class="text-h4">
+    <div class="titulo-page">
       Agendamentos
     </div>
 

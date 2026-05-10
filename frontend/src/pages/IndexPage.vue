@@ -3,7 +3,7 @@
   <q-page class="q-pa-lg">
 
     <!-- TÍTULO -->
-    <div class="text-h4">
+    <div class="titulo-page">
       Dashboard
     </div>
 
