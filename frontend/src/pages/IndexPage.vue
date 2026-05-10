@@ -8,7 +8,7 @@
     </div>
 
     <div class="text-subtitle1 q-mt-sm">
-      Bem-vindo ao sistema de agendamento de salas.
+      Bem-vindo!
     </div>
 
     <!-- BOTÃO -->
