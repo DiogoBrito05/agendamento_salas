@@ -7,7 +7,7 @@
       Dashboard
     </div>
 
-    <div class="text-subtitle1 q-mt-sm">
+    <div class="subtitulo-page q-mt-sm">
       Bem-vindo!
     </div>
 
@@ -32,7 +32,7 @@
         class="col-12 col-md-4"
       >
 
-        <q-card class="rounded-borders">
+        <q-card class="card-padrao">
 
           <q-card-section>
 
@@ -105,7 +105,14 @@
     </div>
 
     <!-- CALENDÁRIO -->
-    <div class="q-mt-xl">
+    <div
+      class="
+        q-mt-xl
+        card-padrao
+        bg-white
+        q-pa-md
+      "
+    >
 
       <CalendarioAgenda
         :agendamentos="agendamentos"
@@ -117,16 +124,16 @@
     <q-dialog v-model="modalAberto">
 
       <q-card
+        class="card-padrao"
         style="
           width: 550px;
           max-width: 90vw;
-          border-radius: 12px;
         "
       >
 
         <q-card-section class="row items-center">
 
-          <div class="text-h5 text-weight-medium">
+          <div class="titulo-page">
             Agendar uma sala
           </div>
 
@@ -167,7 +174,6 @@
             dense
             outlined
             class="q-mb-lg"
-
             @click="$event.target.showPicker()"
           />
 
@@ -182,7 +188,6 @@
                 type="time"
                 dense
                 outlined
-
                 @click="$event.target.showPicker()"
               />
 
@@ -196,7 +201,6 @@
                 type="time"
                 dense
                 outlined
-
                 @click="$event.target.showPicker()"
               />
 

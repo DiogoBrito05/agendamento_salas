@@ -11,29 +11,30 @@
   >
 
     <q-card
-      style="width: 400px"
-      class="q-pa-lg"
+      class="
+        card-padrao
+        q-pa-xl
+      "
+      style="
+        width: 400px;
+        max-width: 90vw;
+      "
     >
 
       <!-- TÍTULO -->
       <q-card-section class="text-center">
 
-        <div
-          class="
-            text-h4
-            text-weight-bold
-          "
-        >
+        <div class="titulo-page">
           Agendamento de Salas
         </div>
 
         <div
           class="
-            text-subtitle1
+            subtitulo-page
             q-mt-sm
           "
         >
-          Conecte-se
+          Conecte-se ao sistema
         </div>
 
       </q-card-section>
@@ -46,20 +47,38 @@
           v-model="email"
           label="E-mail"
           outlined
+          dense
           class="q-mb-md"
-        />
+        >
+
+          <template #prepend>
+
+            <q-icon name="mail" />
+
+          </template>
+
+        </q-input>
 
         <!-- SENHA -->
         <q-input
           v-model="senha"
           label="Senha"
           outlined
+          dense
+          class="q-mb-md"
+
           :type="
             mostrarSenha
               ? 'text'
               : 'password'
           "
         >
+
+          <template #prepend>
+
+            <q-icon name="lock" />
+
+          </template>
 
           <template #append>
 
@@ -70,6 +89,7 @@
                   : 'visibility'
               "
               class="cursor-pointer"
+
               @click="
                 mostrarSenha =
                 !mostrarSenha
@@ -89,6 +109,8 @@
           label="Entrar"
           color="primary"
           class="full-width"
+          size="md"
+
           @click="fazerLogin"
         />
 
@@ -137,10 +159,6 @@ async function fazerLogin() {
 
   try {
 
-    console.log(
-      'INICIO LOGIN'
-    )
-
     const response =
       await api.post(
         '/auth/login',
@@ -152,10 +170,6 @@ async function fazerLogin() {
 
         }
       )
-
-    console.log(
-      response.data
-    )
 
     // STORE
     authStore.salvarLogin(
