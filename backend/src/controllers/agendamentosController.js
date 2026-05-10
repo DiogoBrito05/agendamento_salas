@@ -2,8 +2,14 @@ const agendamentosService = require('../services/agendamentosService');
 
 async function listar(req, res) {
   try {
+
+    const { salaId } = req.query
+
     const agendamentos =
-      await agendamentosService.listarAgendamentos();
+      await agendamentosService
+        .listarAgendamentos(
+          salaId
+        )
 
     res.json(agendamentos);
 

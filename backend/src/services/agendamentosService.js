@@ -1,18 +1,56 @@
 const db = require('../database/database');
 
 
-async function listarAgendamentos() {
-    const sql = `
+async function listarAgendamentos(
+    salaId
+) {
+
+    let sql = `
     SELECT
       agendamentos.*,
       salas.nome AS salaNome
-    FROM agendamentos
-     INNER JOIN salas
-     ON salas.id = agendamentos.salaId
-    ORDER BY data ASC, horaInicio ASC
-  `;
 
-    return await db.all(sql);
+    FROM agendamentos
+
+    INNER JOIN salas
+      ON salas.id = agendamentos.salaId
+  `
+
+    const params = []
+
+    // FILTRO para SALA
+    if (salaId) {
+        sql += `
+      WHERE agendamentos.salaId = ?
+    `
+        params.push(salaId)
+    }
+
+    sql += `
+    ORDER BY
+      data ASC,
+      horaInicio ASC
+  `
+
+    const agendamentos =
+        await db.all(sql, params)
+
+    // REMOVE EXPIRADOS
+    const agora = new Date()
+
+    return agendamentos.filter(
+        agendamento => {
+
+            const fim =
+                new Date(
+                    `${agendamento.data}T${agendamento.horaFim}`
+                )
+
+            return fim > agora
+
+        }
+    )
+
 }
 
 function horaValida(hora) {
@@ -38,7 +76,7 @@ async function criarAgendamento(dados, usuarioIdC, usuarioNomeC) {
         throw new Error('Campos obrigatórios não enviados');
     }
 
-    if (!horaValida(horaInicio) || !horaValida(horaFim) ) {
+    if (!horaValida(horaInicio) || !horaValida(horaFim)) {
         throw new Error(
             'Horário inválido'
         )
