@@ -1,12 +1,24 @@
 import { api }
   from 'src/boot/axios'
 
-async function listar() {
+async function listar(
+  salaId = null
+) {
 
   const response =
-    await api.get('/agendamentos')
+    await api.get(
+      '/agendamentos',
+      {
+
+        params: {
+          salaId
+        }
+
+      }
+    )
 
   return response.data
+
 }
 
 async function criar(dados) {
