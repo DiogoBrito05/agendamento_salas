@@ -2,11 +2,17 @@
 
   <q-page class="q-pa-lg">
 
+    <!-- TÍTULO -->
     <div class="titulo-page">
       Agendamentos
     </div>
 
-    <div class="q-mt-lg q-mb-lg">
+    <div class="subtitulo-page q-mt-sm">
+      Visualize e gerencie os agendamentos.
+    </div>
+
+    <!-- FILTRO -->
+    <div class="q-mt-lg q-mb-xl">
 
       <q-select
         v-model="filtroSala"
@@ -22,70 +28,125 @@
         label="Filtrar por sala"
 
         outlined
+        dense
         clearable
 
         style="max-width: 300px"
-      />
+
+        @update:model-value="
+          carregarAgendamentos
+        "
+      >
+
+        <template #prepend>
+
+          <q-icon name="search" />
+
+        </template>
+
+      </q-select>
 
     </div>
 
-    <div class="row q-col-gutter-md">
+    <!-- LISTAGEM -->
+    <div class="row q-col-gutter-lg">
 
       <div
-        v-for="agendamento in agendamentosFiltrados"
+        v-for="agendamento in agendamentos"
         :key="agendamento.id"
+
         class="col-12 col-md-6"
       >
 
-        <q-card>
+        <q-card class="card-padrao">
 
           <q-card-section>
 
-            <div class="text-h6">
+            <!-- TITULO -->
+            <div
+              class="
+                text-h6
+                text-weight-bold
+              "
+            >
               {{ agendamento.titulo }}
             </div>
 
-            <div class="text-subtitle2 q-mt-sm">
+            <!-- SALA -->
+            <div
+              class="
+                text-subtitle2
+                text-primary
+                q-mt-sm
+              "
+            >
 
-              Sala:
+              <q-icon
+                name="meeting_room"
+                size="18px"
+                class="q-mr-xs"
+              />
+
               {{ agendamento.salaNome }}
 
             </div>
 
-            <div class="q-mt-sm">
+            <!-- DATA -->
+            <div class="q-mt-md">
 
-              Data:
+              <q-icon
+                name="event"
+                size="18px"
+                class="q-mr-xs"
+              />
+
               {{ agendamento.data }}
 
             </div>
 
-            <div>
+            <!-- HORA -->
+            <div class="q-mt-sm">
 
-              Início:
+              <q-icon
+                name="schedule"
+                size="18px"
+                class="q-mr-xs"
+              />
+
               {{ agendamento.horaInicio }}
-
-            </div>
-
-            <div>
-
-              Fim:
+              às
               {{ agendamento.horaFim }}
 
             </div>
 
-            <div class="q-mt-sm">
+            <!-- USUÁRIO -->
+            <div
+              class="
+                q-mt-md
+                text-grey-7
+              "
+            >
 
-              Criado por:
+              <q-icon
+                name="person"
+                size="18px"
+                class="q-mr-xs"
+              />
+
               {{ agendamento.usuarioNome }}
 
             </div>
 
           </q-card-section>
 
-          <q-card-actions align="right">
+          <!-- AÇÕES -->
+          <q-card-actions
+            align="right"
+          >
 
             <q-btn
               color="negative"
+              icon="delete"
               label="Cancelar"
 
               @click="
@@ -111,7 +172,6 @@
 
 import {
   ref,
-  computed,
   onMounted
 } from 'vue'
 
@@ -134,38 +194,35 @@ const filtroSala = ref(null)
 
 async function carregarSalas() {
 
-  salas.value =
-    await salasService.listar()
+  try {
+
+    salas.value =
+      await salasService.listar()
+
+  } catch (erro) {
+
+    console.error(erro)
+
+  }
 
 }
 
 async function carregarAgendamentos() {
 
-  agendamentos.value =
-    await agendamentosService.listar()
+  try {
+
+    agendamentos.value =
+      await agendamentosService.listar(
+        filtroSala.value
+      )
+
+  } catch (erro) {
+
+    console.error(erro)
+
+  }
 
 }
-
-const agendamentosFiltrados =
-  computed(() => {
-
-    if (!filtroSala.value) {
-      return agendamentos.value
-    }
-
-    return agendamentos.value.filter(
-      agendamento => {
-
-        return (
-          agendamento.salaId
-          ===
-          filtroSala.value
-        )
-
-      }
-    )
-
-  })
 
 async function cancelarAgendamento(id) {
 
