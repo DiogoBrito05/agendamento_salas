@@ -49,7 +49,7 @@ Este projeto foi desenvolvido como solução para um **teste técnico para Desen
 
  Usuário 1:
 - Nome de Usuário: developer1
-- E-mail: developer1@gmail.com
+- E-mail: developer@gmail.com
 - Senha: teste@1
 
 ##  Tecnologias Utilizadas
