@@ -3,7 +3,7 @@ const bcrypt = require('bcryptjs');
 
 async function inicializarBanco() {
   try {
-
+    
     await db.run(`
       CREATE TABLE IF NOT EXISTS usuarios (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -37,57 +37,32 @@ async function inicializarBanco() {
 
     console.log('Tabelas criadas/verificadas.');
 
-    // --------------------
-    // verifica se já existem salas
-    const salas = await db.all(`
-      SELECT * FROM salas
-    `);
+    // Insere se a tabela estiver vazia
+    const salas = await db.all('SELECT * FROM salas');
 
-    // se não existir, cria
     if (salas.length === 0) {
-
-      const salasPadrao = [
-        'Sala Executiva',
-        'Sala Criativa',
-        'Sala Reunião'
-      ];
+      const salasPadrao = ['Sala Executiva', 'Sala Criativa', 'Sala Reunião'];
+      
       for (const nome of salasPadrao) {
-        await db.run(`
-          INSERT INTO salas (nome)
-          VALUES (?)
-        `, [nome]);
+        await db.run('INSERT INTO salas (nome) VALUES (?)', [nome]);
       }
-
       console.log('Salas padrão inseridas.');
     }
-    // --------------------
-    const usuarios = await db.all(`
-     SELECT * FROM usuarios
-    `);
+
+    // Cria usuário padrão
+    const usuarios = await db.all('SELECT * FROM usuarios');
 
     if (usuarios.length === 0) {
+      const dataCriacao = new Date().toISOString();
+      const senhaHash = await bcrypt.hash('teste@1', 10);
 
-    const dataCriacao = new Date().toISOString();
+      await db.run(`
+        INSERT INTO usuarios (nome, email, senha, criadoEm)
+        VALUES (?, ?, ?, ?)
+      `, ['developer', 'developer@gmail.com', senhaHash, dataCriacao]);
 
-    const senhaDeveloper1 =
-        await bcrypt.hash('teste@1', 10);
-
-    const senhaDeveloper2 =
-        await bcrypt.hash('teste@12', 10);
-
-    await db.run(`
-    INSERT INTO usuarios (nome, email, senha, criadoEm)
-    VALUES (?, ?, ?, ?)
-    `, ['developer1', 'developer1@gmail.com', senhaDeveloper1, dataCriacao]);
-
-
-    await db.run(`
-    INSERT INTO usuarios (nome, email, senha, criadoEm)
-    VALUES (?, ?, ?, ?)
-    `, ['developer2', 'developer2@gmail.com', senhaDeveloper2, dataCriacao]);
-      console.log('Usuário padrão criado.');
+      console.log('Usuário "developer" criado com sucesso.');
     }
-    // --------------------
 
   } catch (erro) {
     console.error('Erro ao inicializar banco:', erro);
