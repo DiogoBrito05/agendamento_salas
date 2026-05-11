@@ -28,6 +28,22 @@ Este projeto foi desenvolvido como solução para um **teste técnico para Desen
 *   **Agendamento no Passado:** Bloqueia a criação de reuniões em datas/horários retroativos.
 *   **Cancelamento Restrito:** Apenas o usuário que criou a reunião tem permissão para cancelá-la.
 
+
+## **Usuarios**
+
+ O projeto contém dois usuarios padrões que são criados assim que o backend roda 
+
+ Usuário 1:
+- Nome de Usuário: developer1
+- E-mail: developer1@gmail.com
+- Senha: teste@1
+
+  Usuário 2:
+- Nome de Usuário: developer2
+- E-mail: developer2@gmail.com
+- Senha: teste@12
+
+
 ##  Tecnologias Utilizadas
 
 ### **Frontend**
