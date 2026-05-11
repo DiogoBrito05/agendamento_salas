@@ -93,4 +93,37 @@ frontend/
 └── App.vue
 ```
 
+## Como Rodar o Projeto
 
+### Backend
+
+* Entrar na pasta
+```sha
+cd backend
+```
+* Instalar dependências
+
+```sha
+npm install
+```
+* Rodar servidor
+
+```sha
+npm run dev
+```
+### Frontend
+
+* Entrar na pasta
+```sha
+cd frontend
+```
+* Instalar dependências
+
+```sha
+npm install
+```
+* Rodar servidor
+
+```sha
+quasar dev
+```
