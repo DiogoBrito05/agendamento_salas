@@ -47,7 +47,7 @@ async function criar(req, res) {
     res.status(400).json({
 
       erro:
-        'Erro ao criar usuário'
+        erro.message
 
     })
 
