@@ -102,15 +102,18 @@ frontend/
 cd backend
 ```
 * Instalar dependências
-
 ```sha
 npm install
 ```
 * Rodar servidor
-
 ```sha
 npm run dev
 ```
+* Servidor:
+```sha
+http://localhost:3000
+```
+
 ### Frontend
 
 * Entrar na pasta
@@ -118,12 +121,14 @@ npm run dev
 cd frontend
 ```
 * Instalar dependências
-
 ```sha
 npm install
 ```
 * Rodar servidor
-
 ```sha
 quasar dev
+```
+* Servidor:
+```sha
+http://localhost:3000
 ```
