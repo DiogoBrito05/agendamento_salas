@@ -12,11 +12,25 @@ Este projeto foi desenvolvido como solução para um **teste técnico para Desen
 *   Autenticação segura com JWT para mais segurança.
 *   Persistência de sessão e proteção de rotas.
 *   Funcionalidade de Logout.
+*   Cadastro de novos usuários
+*   Validação de credenciais
+*   Controle de acesso por token
+
+## Gerenciamento de Usuários
+
+* Listagem de usuários cadastrados
+* Exclusão de conta
+* Restrição para exclusão apenas da própria conta
+* Validação de usuários duplicados
+* Validação de e-mail
+* Validação de senha mínima
+* Validação de nome obrigatório
 
 ### **Dashboard & Agendamentos**
 *   Listagem de salas com status em tempo real (**Disponível**, **Ocupada**, **Próximo Agendamento**).
-*   Criação e listagem dinâmica de reuniões.
-*   Filtro de agendamentos por sala.
+*   Criação de reuniões
+*   Atualização automática da interface
+*   Cancelamento de reuniões
 
 ### **Calendário Interativo**
 *   Visualização Mensal, Semanal e Diária.
@@ -31,18 +45,12 @@ Este projeto foi desenvolvido como solução para um **teste técnico para Desen
 
 ## **Usuarios**
 
- O projeto contém dois usuarios padrões que são criados assim que o backend roda 
+ O projeto contém um usuario padrão que é criado assim que o backend roda 
 
  Usuário 1:
 - Nome de Usuário: developer1
 - E-mail: developer1@gmail.com
 - Senha: teste@1
-
-  Usuário 2:
-- Nome de Usuário: developer2
-- E-mail: developer2@gmail.com
-- Senha: teste@12
-
 
 ##  Tecnologias Utilizadas
 
@@ -57,7 +65,7 @@ Este projeto foi desenvolvido como solução para um **teste técnico para Desen
 ### **Backend**
 *   **Node.js**
 *   **Express**
-*   **JWT** (JSON Web Token)
+*   **JWT** 
 *   **BcryptJS** 
 
 ### **Banco de Dados**
@@ -69,12 +77,13 @@ Este projeto foi desenvolvido como solução para um **teste técnico para Desen
 ```text
 backend/
 ├── src/
-│   ├── config/      # Configurações de ambiente
-│   ├── controllers/ # Lógica de rotas
-│   ├── database/    # Migrations e conexão SQLite
-│   ├── middlewares/ # Validação de Token JWT
-│   ├── routes/      # Definição dos endpoints
-│   └── services/    # Regras de negócio
+│   ├── config/         # Configurações do sistema
+│   ├── controllers/    # Controle das requisições
+│   ├── database/       # Conexão e inicialização SQLite
+│   ├── middlewares/    # Middleware JWT e autenticação
+│   ├── routes/         # Rotas da API
+│   ├── services/       # Regras de negócio
+│  
 └── server.js
 ````
 
@@ -83,13 +92,15 @@ backend/
 frontend/
 ├── src/
 │   ├── assets/
-│   ├── boot/        # Configurações de plugins (Axios, etc)
-│   ├── components/  # Componentes reutilizáveis
-|   |__ css/           
-│   ├── layouts/     # Templates de página
-│   ├── pages/       # Telas do sistema
-│   ├── services/    # Integração com API
-│   └── stores/      # Estado global (Pinia)
+│   ├── boot/           # Axios e configurações globais
+│   ├── components/     # Componentes reutilizáveis
+│   ├── css/            # Estilos globais
+│   ├── layouts/        # Layout principal
+│   ├── pages/          # Páginas do sistema
+│   ├── router/         # Rotas do frontend
+│   ├── services/       # Comunicação com API
+│   ├── stores/         # Estado global
+│   
 └── App.vue
 ```
 
