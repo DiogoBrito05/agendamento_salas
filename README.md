@@ -49,6 +49,19 @@ Este projeto foi desenvolvido como solução para um **teste técnico para Desen
 
 ## Estrutura do Projeto
 
+### **Backend**
+```text
+backend/
+├── src/
+│   ├── config/      # Configurações de ambiente
+│   ├── controllers/ # Lógica de rotas
+│   ├── database/    # Migrations e conexão SQLite
+│   ├── middlewares/ # Validação de Token JWT
+│   ├── routes/      # Definição dos endpoints
+│   └── services/    # Regras de negócio
+└── server.js
+````
+
 ### **Frontend**
 ```text
 frontend/
@@ -56,10 +69,12 @@ frontend/
 │   ├── assets/
 │   ├── boot/        # Configurações de plugins (Axios, etc)
 │   ├── components/  # Componentes reutilizáveis
+|   |__ css/           
 │   ├── layouts/     # Templates de página
 │   ├── pages/       # Telas do sistema
 │   ├── services/    # Integração com API
 │   └── stores/      # Estado global (Pinia)
 └── App.vue
+```
 
 
