@@ -1,55 +1,32 @@
 const routes = [
-
-  // LOGIN
   {
-    path: '/login',
-
-    component: () =>
-      import('pages/LoginPage.vue')
+    path: "/login",
+    component: () => import("pages/LoginPage.vue"),
   },
 
-  // SISTEMA
+  //Protegido por Autenticação
   {
-    path: '/',
-
-    component: () =>
-      import('layouts/MainLayout.vue'),
-
+    path: "/",
+    component: () => import("layouts/MainLayout.vue"),
     meta: {
-      requiresAuth: true
+      requiresAuth: true,
     },
-
     children: [
-
-      // DASHBOARD
       {
-        path: '',
-
-        component: () =>
-          import('pages/IndexPage.vue')
+        path: "",
+        component: () => import("pages/IndexPage.vue"),
       },
-
-      // AGENDAMENTOS
+  
       {
-        path: 'agendamentos',
-
-        component: () =>
-          import(
-            'pages/AgendamentosPage.vue'
-          )
-      }
-
-    ]
+        path: "/usuarios",
+        component: () => import("pages/UsuariosPage.vue"),
+      },
+    ],
   },
-
-  // 404
   {
-    path: '/:catchAll(.*)*',
+    path: "/:catchAll(.*)*",
+    component: () => import("pages/ErrorNotFound.vue"),
+  },
+];
 
-    component: () =>
-      import('pages/ErrorNotFound.vue')
-  }
-
-]
-
-export default routes
+export default routes;
