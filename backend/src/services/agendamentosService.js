@@ -1,65 +1,44 @@
 const db = require('../database/database');
 
-
 async function listarAgendamentos(
-    salaId
+  salaId
 ) {
 
-    let sql = `
+  let sql = `
     SELECT
       agendamentos.*,
       salas.nome AS salaNome
-
     FROM agendamentos
-
     INNER JOIN salas
       ON salas.id = agendamentos.salaId
   `
+  const params = []
 
-    const params = []
-
-    // FILTRO para SALA
-    if (salaId) {
-        sql += `
+  if (salaId) {
+    sql += `
       WHERE agendamentos.salaId = ?
     `
-        params.push(salaId)
-    }
+    params.push(salaId)
+  }
 
-    sql += `
+  sql += `
     ORDER BY
       data ASC,
       horaInicio ASC
   `
-
-    const agendamentos =
-        await db.all(sql, params)
-
-    // REMOVE EXPIRADOS
-    const agora = new Date()
-
-    return agendamentos.filter(
-        agendamento => {
-
-            const fim =
-                new Date(
-                    `${agendamento.data}T${agendamento.horaFim}`
-                )
-
-            return fim > agora
-
-        }
+  const agendamentos =
+    await db.all(
+      sql,
+      params
     )
 
+  return agendamentos
 }
 
 function horaValida(hora) {
-
     const regex =
         /^([01]\d|2[0-3]):([0-5]\d)$/
-
     return regex.test(hora)
-
 }
 
 async function criarAgendamento(dados, usuarioIdC, usuarioNomeC) {
@@ -94,8 +73,6 @@ async function criarAgendamento(dados, usuarioIdC, usuarioNomeC) {
     const agora = new Date();
     const dataInicio = new Date(data + ' ' + horaInicio);
     const dataFim = new Date(data + ' ' + horaFim);
-
-
 
     if (dataInicio < agora) {
         throw new Error('Não é permitido agendar no passado');
@@ -156,7 +133,6 @@ async function criarAgendamento(dados, usuarioIdC, usuarioNomeC) {
 
 async function cancelarAgendamento(id, usuarioIdC) {
 
-    // busca agendamento
     const sqlBusca = `
     SELECT * FROM agendamentos
     WHERE id = ?
@@ -164,7 +140,6 @@ async function cancelarAgendamento(id, usuarioIdC) {
 
     const agendamento =
         await db.get(sqlBusca, [id]);
-
 
     if (!agendamento) {
         throw new Error('Agendamento não encontrado');

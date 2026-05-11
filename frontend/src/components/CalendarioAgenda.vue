@@ -1,9 +1,8 @@
 <template>
-  <FullCalendar :options="calendarioOpcoes " />
+  <FullCalendar :options="calendarioOpcoes" />
 
   <q-dialog v-model="modalDetalhes">
     <q-card class="card-padrao" style="width: 400px; max-width: 90vw">
-      <!-- TITULO -->
       <q-card-section>
         <div class="titulo-page">
           {{ agendamentoSelecionado?.titulo }}
@@ -13,12 +12,10 @@
       <q-separator />
 
       <q-card-section>
-        <!-- SALA -->
         <div class="q-mb-md">
           <q-icon name="meeting_room" class="q-mr-sm" />
           {{ agendamentoSelecionado?.salaNome }}
         </div>
-
 
         <div class="q-mb-md">
           <q-icon name="event" class="q-mr-sm" />
@@ -29,7 +26,6 @@
           <q-icon name="schedule" class="q-mr-sm" />
           {{ agendamentoSelecionado?.horaInicio }} às {{ agendamentoSelecionado?.horaFim }}
         </div>
-
 
         <div>
           <q-icon name="person" class="q-mr-sm" />
@@ -73,19 +69,27 @@ const modalDetalhes = ref(false)
 const agendamentoSelecionado = ref(null)
 
 const eventos = computed(() => {
-  return props.agendamentos.map(agendamento => ({
-    id: agendamento.id,
-    title: agendamento.titulo,
-    start: `${agendamento.data}T${agendamento.horaInicio}`,
-    end: `${agendamento.data}T${agendamento.horaFim}`,
-    extendedProps: {
-      salaNome: agendamento.salaNome,
-      usuarioNome: agendamento.usuarioNome,
-      data: agendamento.data,
-      horaInicio: agendamento.horaInicio,
-      horaFim: agendamento.horaFim
+  return props.agendamentos.map((agendamento) => {
+    const fimEvento = new Date(`${agendamento.data}T${agendamento.horaFim}`)
+    const eventoPassado = fimEvento < new Date()
+
+    return {
+      id: agendamento.id,
+      title: agendamento.titulo,
+      start: `${agendamento.data}T${agendamento.horaInicio}`,
+      end: `${agendamento.data}T${agendamento.horaFim}`,
+      backgroundColor: eventoPassado ? '#d6d6d6' : '#1976d2',
+      borderColor: eventoPassado ? '#d6d6d6' : '#1976d2',
+      textColor: eventoPassado ? '#555' : '#ffffff',
+      extendedProps: {
+        salaNome: agendamento.salaNome,
+        usuarioNome: agendamento.usuarioNome,
+        data: agendamento.data,
+        horaInicio: agendamento.horaInicio,
+        horaFim: agendamento.horaFim
+      }
     }
-  }))
+  })
 })
 
 async function cancelarAgendamento(id) {
@@ -106,13 +110,14 @@ function abrirDetalhes(info) {
   modalDetalhes.value = true
 }
 
-
-const calendarioOpcoes  = computed(() => ({
+const calendarioOpcoes = computed(() => ({
   plugins: [dayGridPlugin, timeGridPlugin, interactionPlugin],
   locale: ptBrLocale,
   initialView: 'timeGridWeek',
   height: 700,
   events: eventos.value,
+  slotEventOverlap: false,
+  eventMaxStack: 1,
   eventClick(info) {
     abrirDetalhes(info)
   },
@@ -127,11 +132,11 @@ const calendarioOpcoes  = computed(() => ({
 <style scoped>
 :deep(.fc-event) {
   cursor: pointer;
-  transition: .2s;
+  transition: 0.2s;
 }
 
 :deep(.fc-event:hover) {
-  opacity: .9;
+  opacity: 0.9;
   transform: scale(1.02);
 }
 </style>
