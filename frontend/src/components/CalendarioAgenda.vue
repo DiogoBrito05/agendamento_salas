@@ -101,10 +101,16 @@
           v-close-popup
         />
 
-        <q-btn
-          color="negative"
-          icon="delete"
-          label="Cancelar"
+       <q-btn
+        color="negative"
+        icon="delete"
+        label="Cancelar"
+
+        @click="
+          cancelarAgendamento(
+            agendamentoSelecionado.id
+          )
+        "
         />
 
       </q-card-actions>
@@ -135,12 +141,19 @@ import interactionPlugin
 import ptBrLocale
   from '@fullcalendar/core/locales/pt-br'
 
-
 const props = defineProps({
 
   agendamentos: {
 
     type: Array,
+
+    required: true
+
+  },
+
+  onCancelar: {
+
+    type: Function,
 
     required: true
 
@@ -201,6 +214,21 @@ const eventos = computed(() => {
 
 })
 
+async function cancelarAgendamento(id) {
+
+  try {
+
+    await props.onCancelar(id)
+
+    modalDetalhes.value = false
+
+  } catch (erro) {
+
+    console.error(erro)
+
+  }
+
+}
 
 function abrirDetalhes(info) {
 

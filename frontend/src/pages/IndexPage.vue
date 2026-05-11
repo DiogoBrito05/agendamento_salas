@@ -1,12 +1,10 @@
 <template>
 
   <q-page class="q-pa-lg">
-
     <!-- TÍTULO -->
     <div class="titulo-page">
-      Dashboard
+      Agenda
     </div>
-
     <div class="subtitulo-page q-mt-sm">
       Bem-vindo!
     </div>
@@ -114,9 +112,14 @@
       "
     >
 
+      
       <CalendarioAgenda
-        :agendamentos="agendamentos"
-      />
+      :agendamentos="agendamentos"
+
+      :onCancelar="
+        cancelarAgendamento
+      "
+    />
 
     </div>
 
@@ -303,6 +306,42 @@ async function carregarAgendamentos() {
   } catch (erro) {
 
     console.error(erro)
+
+  }
+
+}
+
+async function cancelarAgendamento(id) {
+
+  try {
+
+    await agendamentosService
+      .cancelar(id)
+
+    await carregarAgendamentos()
+
+    $q.notify({
+
+      type: 'positive',
+
+      message:
+        'Agendamento cancelado'
+
+    })
+
+  } catch (erro) {
+
+    console.error(erro)
+
+    $q.notify({
+
+      type: 'negative',
+
+      message:
+        erro.response?.data?.erro
+        || 'Erro ao cancelar'
+
+    })
 
   }
 

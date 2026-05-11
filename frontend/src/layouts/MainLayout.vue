@@ -19,8 +19,6 @@
             !leftDrawerOpen
           "
         />
-
-        <!-- TITULO -->
         <q-toolbar-title
           class="text-weight-bold"
         >
