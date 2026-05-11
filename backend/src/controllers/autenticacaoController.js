@@ -4,7 +4,6 @@ const db = require('../database/database');
 const authConfig = require('../config/auth');
 
 
-
 async function login(req, res) {
     try {
         const { email, senha } = req.body;
@@ -20,7 +19,6 @@ async function login(req, res) {
             FROM usuarios
             WHERE email = ?
             `, [email]);
-
 
         const senhaValida =
             await bcrypt.compare(

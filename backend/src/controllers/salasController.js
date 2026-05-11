@@ -1,9 +1,8 @@
-const salasService =
-    require('../services/salasService');
+const salasService = require('../services/salasService');
 
 async function listar(req, res) {
     try {
-
+        
         const salas =
             await salasService.listarSalas();
 

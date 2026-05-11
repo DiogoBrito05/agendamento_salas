@@ -2,7 +2,6 @@ const agendamentosService = require('../services/agendamentosService');
 
 async function listar(req, res) {
   try {
-
     const { salaId } = req.query
 
     const agendamentos =
@@ -15,7 +14,6 @@ async function listar(req, res) {
 
   } catch (erro) {
     console.error(erro);
-
     res.status(500).json({
       erro: erro.message
     });
@@ -33,7 +31,6 @@ async function criar(req, res) {
 
   } catch (erro) {
     console.error(erro);
-
     res.status(400).json({
       erro: erro.message
     });
