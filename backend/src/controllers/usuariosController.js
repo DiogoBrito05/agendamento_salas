@@ -44,7 +44,7 @@ async function criar(req, res) {
 
     console.error(erro)
 
-    res.status(500).json({
+    res.status(400).json({
 
       erro:
         'Erro ao criar usuário'

@@ -21,6 +21,30 @@ async function listarUsuarios() {
 
 async function criarUsuario(dados) {
 
+  if (!dados.nome) {
+
+    throw new Error(
+      'Nome é obrigatório'
+    )
+
+  }
+
+  if (!dados.email) {
+
+    throw new Error(
+      'E-mail é obrigatório'
+    )
+
+  }
+
+  if (!dados.senha) {
+
+    throw new Error(
+      'Senha é obrigatória'
+    )
+
+  }
+
   const bcrypt =
     require('bcryptjs')
 
