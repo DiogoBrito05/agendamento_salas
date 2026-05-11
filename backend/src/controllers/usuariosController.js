@@ -64,7 +64,7 @@ async function deletar(req, res) {
 
         Number(req.params.id),
 
-        req.usuarioId
+        req.usuario.id
 
       )
 

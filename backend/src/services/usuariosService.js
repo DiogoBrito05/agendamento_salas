@@ -74,13 +74,13 @@ async function deletarUsuario(
   usuarioIdParam,
   usuarioIdToken
 ) {
-
+ console.log(usuarioIdParam, usuarioIdToken)
 
   if (
-    usuarioIdParam
-    !==
-    usuarioIdToken
-  ) {
+  Number(usuarioIdParam)
+  !=
+  Number(usuarioIdToken)
+) {
 
     throw new Error(
       'Você só pode deletar sua própria conta'
