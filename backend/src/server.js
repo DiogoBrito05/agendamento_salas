@@ -11,7 +11,8 @@ const autenticacaoMiddleware = require('./middlewares/autenticacaoMiddleware');
 const agendamentosRoutes = require('./routes/agendamentosRoutes');
 const salasRoutes = require('./routes/salasRoutes');
 const autenticacaoRoutes = require('./routes/autenticacaoRoutes');
-//const usuariosRoutes = require('./routes/usuariosRoutes');
+const usuariosRoutes = require('./routes/usuariosRoutes');
+
 
 require('./database/init');
 
@@ -29,9 +30,9 @@ app.get('/', (req, res) => {
 
 // Rotas ------------
 app.use('/agendamentos', autenticacaoMiddleware, agendamentosRoutes);
-app.use('/salas', salasRoutes);
+app.use('/salas', autenticacaoMiddleware,salasRoutes);
 app.use('/auth', autenticacaoRoutes);
-// app.use('/usuarios', usuariosRoutes);
+app.use('/usuarios', usuariosRoutes);
 
 
 
