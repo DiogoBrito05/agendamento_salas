@@ -59,18 +59,15 @@ async function criarUsuario(dados) {
         SELECT *
         FROM usuarios
         WHERE
-          nome = ?
-          OR
           email = ?
       `,
       [
-        dados.nome,
         dados.email
       ]
     )
 
   if (usuarioExistente) {
-    throw new Error('Usuário já cadastrado')
+    throw new Error('E-mail já cadastrado')
   }
 
   const bcrypt = require('bcryptjs')
