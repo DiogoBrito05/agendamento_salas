@@ -24,13 +24,15 @@ export default route(function () {
     history: createHistory(process.env.VUE_ROUTER_BASE),
   });
 
-  // PROTEÇÃO
-  Router.beforeEach((to, from, next) => {
-    const token = localStorage.getItem("token");
-    if (to.meta.requiresAuth && !token) {
-      return next("/login");
-    }
-    next();
-  });
+  
+ Router.beforeEach((to) => {
+  const token = localStorage.getItem('token')
+  const usuario = localStorage.getItem('usuario')
+  // PROTEGIDO
+  if (to.meta.requiresAuth && (!token || !usuario)) {
+    return '/login'
+  }
+})
+
   return Router;
 });

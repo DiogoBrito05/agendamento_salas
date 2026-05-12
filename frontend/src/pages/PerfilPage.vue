@@ -1,15 +1,10 @@
 <template>
   <q-page class="q-pa-lg">
-
-    <div class="titulo-page">
-      Gerencie suas informações.
-    </div>
+    <div class="titulo-page">Gerencie suas informações.</div>
 
     <q-card class="card-padrao q-mt-xl">
       <q-card-section>
-        <div class="text-h6 text-weight-bold">
-         Informações do usuário
-        </div>
+        <div class="text-h6 text-weight-bold">Informações do usuário</div>
       </q-card-section>
 
       <q-separator />
@@ -60,9 +55,7 @@
 
     <q-card class="card-padrao q-mt-xl">
       <q-card-section>
-        <div class="text-h6 text-weight-bold">
-          Meus Agendamentos
-        </div>
+        <div class="text-h6 text-weight-bold">Meus Agendamentos</div>
       </q-card-section>
 
       <q-separator />
@@ -93,130 +86,127 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from 'vue'
-import { useRouter } from 'vue-router'
-import { useQuasar } from 'quasar'
-import agendamentosService from 'src/services/agendamentos.service'
-import usuariosService from 'src/services/usuarios.service'
+import { onMounted, ref } from "vue";
+import { useRouter } from "vue-router";
+import { useQuasar } from "quasar";
+import agendamentosService from "src/services/agendamentos.service";
+import usuariosService from "src/services/usuarios.service";
 
 const columns = [
   {
-    name: 'titulo',
-    label: 'Título',
-    field: 'titulo',
-    align: 'left'
+    name: "titulo",
+    label: "Título",
+    field: "titulo",
+    align: "left",
   },
   {
-    name: 'sala',
-    label: 'Sala',
-    field: 'salaNome',
-    align: 'left'
+    name: "sala",
+    label: "Sala",
+    field: "salaNome",
+    align: "left",
   },
   {
-    name: 'data',
-    label: 'Data',
-    field: 'data',
-    align: 'left'
+    name: "data",
+    label: "Data",
+    field: "data",
+    align: "left",
   },
   {
-    name: 'horario',
-    label: 'Horário',
-    field: row => `${row.horaInicio} às ${row.horaFim}`,
-    align: 'left'
+    name: "horario",
+    label: "Horário",
+    field: (row) => `${row.horaInicio} às ${row.horaFim}`,
+    align: "left",
   },
   {
-    name: 'acoes',
-    label: 'Ações',
-    field: 'acoes',
-    align: 'right'
-  }
-]
+    name: "acoes",
+    label: "Ações",
+    field: "acoes",
+    align: "right",
+  },
+];
 
-const meusAgendamentos = ref([])
-const router = useRouter()
-const $q = useQuasar()
+const meusAgendamentos = ref([]);
+const router = useRouter();
+const $q = useQuasar();
 
 const usuario = ref({
-  nome: '',
-  email: '',
-  senha: ''
-})
-
+  nome: "",
+  email: "",
+  senha: "",
+});
 
 async function carregarPerfil() {
   try {
-    const response = await usuariosService.buscarUsuarioLogado()
+    const response = await usuariosService.buscarUsuarioLogado();
     usuario.value = {
       ...response,
-      senha: ''
-    }
+      senha: "",
+    };
   } catch (erro) {
-    console.error(erro)
+    console.error(erro);
   }
 }
 
 async function carregarMeusAgendamentos() {
   try {
-    meusAgendamentos.value = await agendamentosService.listarMeus()
+    meusAgendamentos.value = await agendamentosService.listarMeus();
   } catch (erro) {
-    console.error(erro)
+    console.error(erro);
   }
 }
 
 async function cancelarAgendamento(id) {
   try {
-    await agendamentosService.cancelar(id)
-    await carregarMeusAgendamentos()
+    await agendamentosService.cancelar(id);
+    await carregarMeusAgendamentos();
     $q.notify({
-      type: 'positive',
-      message: 'Agendamento cancelado'
-    })
+      type: "positive",
+      message: "Agendamento cancelado",
+    });
   } catch (erro) {
     $q.notify({
-      type: 'negative',
-      message: erro.response?.data?.erro || 'Erro ao cancelar'
-    })
+      type: "negative",
+      message: erro.response?.data?.erro || "Erro ao cancelar",
+    });
   }
 }
-
 
 async function salvarAlteracoes() {
   try {
-    const response = await usuariosService.atualizarPerfil(usuario.value)
-    localStorage.setItem('usuario', JSON.stringify(response))
+    const response = await usuariosService.atualizarPerfil(usuario.value);
+    localStorage.setItem("usuario", JSON.stringify(response));
     $q.notify({
-      type: 'positive',
-      message: 'Perfil atualizado'
-    })
+      type: "positive",
+      message: "Perfil atualizado",
+    });
   } catch (erro) {
     $q.notify({
-      type: 'negative',
-      message: erro.response?.data?.erro || 'Erro ao atualizar perfil'
-    })
+      type: "negative",
+      message: erro.response?.data?.erro || "Erro ao atualizar perfil",
+    });
   }
 }
 
-
 async function deletarConta() {
   try {
-    await usuariosService.deletar(usuario.value.id)
-    localStorage.removeItem('token')
-    localStorage.removeItem('usuario')
+    await usuariosService.deletar(usuario.value.id);
+    localStorage.removeItem("token");
+    localStorage.removeItem("usuario");
     $q.notify({
-      type: 'positive',
-      message: 'Conta removida'
-    })
-    router.push('/login')
+      type: "positive",
+      message: "Conta removida com sucesso",
+    });
+    router.replace("/login");
   } catch (erro) {
     $q.notify({
-      type: 'negative',
-      message: erro.response?.data?.erro || 'Erro ao excluir conta'
-    })
+      type: "negative",
+      message: erro.response?.data?.erro || "Erro ao excluir conta",
+    });
   }
 }
 
 onMounted(() => {
-  carregarPerfil()
-  carregarMeusAgendamentos()
-})
+  carregarPerfil();
+  carregarMeusAgendamentos();
+});
 </script>
