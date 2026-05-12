@@ -1,6 +1,10 @@
 <template>
   <q-page class="q-pa-lg">
-    <div class="titulo-page">Gerencie suas informações.</div>
+    <div class="titulo-page">Meu Perfil</div>
+
+    <div class="subtitulo-page q-mt-sm">
+      Gerencie suas informações e agendamentos!
+    </div>
 
     <q-card class="card-padrao q-mt-xl">
       <q-card-section>
@@ -36,7 +40,6 @@
       </q-card-section>
 
       <q-card-actions align="right">
-        <!-- EXCLUIR -->
         <q-btn
           color="negative"
           icon="delete"
@@ -68,7 +71,7 @@
         hide-pagination
         :rows-per-page-options="[0]"
       >
-        <!-- AÇÕES -->
+        
         <template #body-cell-acoes="props">
           <q-td align="right">
             <q-btn
