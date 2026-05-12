@@ -38,9 +38,9 @@ Este projeto foi desenvolvido como solução para um **teste técnico para Desen
 
 ### **Calendário Interativo**
 *  Visualização:
-  * Mensal
-  * Semanal
-  * Diária
+    * Mensal
+    * Semanal
+    * Diária
 * Exibição detalhada dos horários
 * Modal com detalhes do agendamento
 * Cancelamento diretamente pelo calendário
@@ -126,7 +126,6 @@ frontend/
 Para executar o projeto localmente, é necessário possuir instalado:
 
 * Node.js (versão 18 ou superior)
-* Quasar CLI
 
 ---
 
@@ -135,7 +134,7 @@ Para executar o projeto localmente, é necessário possuir instalado:
 ### **Node.js**
 
 Download:
-[https://nodejs.org/pt](https://nodejs.org/pt)
+[https://nodejs.org/en/download](https://nodejs.org/en/download)
 
 Verificar instalação:
 
@@ -186,5 +185,5 @@ quasar dev
 ```
 * Servidor:
 ```sha
-http://localhost:3000
+http://localhost:9000
 ```
