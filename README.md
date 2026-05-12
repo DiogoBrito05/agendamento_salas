@@ -1,6 +1,6 @@
 # Sistema de Agendamento de Salas 
 
-Sistema web desenvolvido para o gerenciamento de salas de reunião corporativas, permitindo que usuários realizem login, criem agendamentos, visualizem reservas em um calendário interativo e gerenciem reuniões de forma simples e intuitiva.
+Sistema web desenvolvido para o gerenciamento de salas de reunião corporativas, permitindo que usuários realizem cadastro e login, criem agendamentos, visualizem reservas em um calendário interativo e gerenciem reuniões de forma simples e intuitiva.
 
 ## Objetivo do Projeto
 
@@ -73,7 +73,7 @@ Este projeto foi desenvolvido como solução para um **teste técnico para Desen
 *   **Vue 3**
 *   **Quasar Framework**
 *   **Vue Router**
-*   **Pinia** (Para Gerenciamento de estado)
+*   **Pinia**
 *   **Axios**
 *   **FullCalendar**
 
