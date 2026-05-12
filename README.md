@@ -4,7 +4,7 @@ Sistema web desenvolvido para o gerenciamento de salas de reunião corporativas,
 
 ## Objetivo do Projeto
 
-Este projeto foi desenvolvido como solução para um **teste técnico para Desenvolvedor Fullstack (Vue 3, Quasar e Node.js)**, contemplando:
+Este projeto foi desenvolvido como solução para um **teste técnico para Desenvolvedor Fullstack (Vue 3, Quasar e Node.js)**
 
 ---
 ##  Funcionalidades Implementadas
@@ -125,13 +125,14 @@ frontend/
 
 Para executar o projeto localmente, é necessário possuir instalado:
 
-* Node.js (versão 22 ou superior)
+* **Node.js (versão 22 ou superior)**
+* **Quasar cli**
 
 ---
 
 # Instalação das Ferramentas
 
-### **Node.js**
+## **Node.js**
 
 Download:
 [https://nodejs.org/en/download](https://nodejs.org/en/download)
@@ -141,7 +142,14 @@ Verificar instalação:
 ```bash
 node -v
 ```
+## **Quasar cli**
+
+* Instalar Quasar CLI globalmente
+```sha
+npm install -g @quasar/cli
+```
 ---
+
 ## Como Rodar o Projeto localmente
 
 ### **Clonar o Repositório**
@@ -178,10 +186,6 @@ cd frontend
 * Instalar dependências
 ```sha
 npm install
-```
-* Instalar Quasar CLI globalmente
-```sha
-npm install -g @quasar/cli
 ```
 * Rodar servidor
 ```sha
