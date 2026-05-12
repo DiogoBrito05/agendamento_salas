@@ -125,7 +125,7 @@ frontend/
 
 Para executar o projeto localmente, é necessário possuir instalado:
 
-* Node.js (versão 18 ou superior)
+* Node.js (versão 22 ou superior)
 
 ---
 
@@ -178,6 +178,10 @@ cd frontend
 * Instalar dependências
 ```sha
 npm install
+```
+* Instalar Quasar CLI globalmente
+```sha
+npm install -g @quasar/cli
 ```
 * Rodar servidor
 ```sha
