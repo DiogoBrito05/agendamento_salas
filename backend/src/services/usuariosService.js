@@ -1,6 +1,5 @@
 const db = require("../database/database");
 
-
 async function criarUsuario(dados) {
   if (!dados.nome) {
     throw new Error("Nome é obrigatório");
@@ -153,7 +152,7 @@ async function atualizarPerfil(usuarioId, dados) {
 
   const params = [dados.nome, dados.email];
 
-  // SENHA OPCIONAL
+ 
   if (senhaHash) {
     sql += `,
       senha = ?
