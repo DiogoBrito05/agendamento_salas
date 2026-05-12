@@ -1,23 +1,6 @@
 const usuariosService =
   require('../services/usuariosService')
 
-async function listar(req, res) {
-  try {
-
-    const usuarios =
-      await usuariosService
-        .listarUsuarios()
-
-    res.json(usuarios)
-
-  } catch (erro) {
-    console.error(erro)
-    res.status(500).json({
-      erro:
-        'Erro ao listar usuários'
-    })
-  }
-}
 
 async function criar(req, res) {
   try {
@@ -58,8 +41,52 @@ async function deletar(req, res) {
   }
 }
 
+async function buscarUsuarioLogado(
+  req,
+  res
+) {
+  try {
+    const usuario =
+      await usuariosService
+        .buscarPorId(
+          req.usuario.id
+        )
+    res.json(usuario)
+
+  } catch (erro) {
+    console.error(erro)
+    res.status(400).json({
+      erro:
+        erro.message
+    })
+  }
+}
+
+async function atualizarPerfil(
+  req,
+  res
+) {
+  try {
+    const usuario =
+      await usuariosService
+        .atualizarPerfil(
+          req.usuario.id,
+          req.body
+        )
+    res.json(usuario)
+
+  } catch (erro) {
+    console.error(erro)
+    res.status(400).json({
+      erro:
+        erro.message
+    })
+  }
+
+}
 module.exports = {
-  listar,
   criar,
-  deletar
+  deletar,
+  buscarUsuarioLogado,
+  atualizarPerfil
 }

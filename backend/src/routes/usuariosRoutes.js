@@ -1,10 +1,11 @@
-const express = require('express')
-const authMiddleware = require('../middlewares/autenticacaoMiddleware')
-const usuariosController = require('../controllers/usuariosController')
-const router = express.Router()
+const express = require("express");
+const authMiddleware = require("../middlewares/autenticacaoMiddleware");
+const usuariosController = require("../controllers/usuariosController");
+const router = express.Router();
 
-router.get('/lista', authMiddleware, usuariosController.listar)
-router.post('/', usuariosController.criar)
-router.delete('/:id', authMiddleware, usuariosController.deletar)
+router.post("/", usuariosController.criar);
+router.delete("/:id", authMiddleware, usuariosController.deletar);
+router.get("/me",authMiddleware,usuariosController.buscarUsuarioLogado);
+router.put("/update",authMiddleware,usuariosController.atualizarPerfil);
 
-module.exports = router
+module.exports = router;

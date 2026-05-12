@@ -1,70 +1,76 @@
-const agendamentosService = require('../services/agendamentosService');
+const agendamentosService = require("../services/agendamentosService");
 
 async function listar(req, res) {
   try {
-    const { salaId } = req.query
+    const { salaId } = req.query;
 
-    const agendamentos =
-      await agendamentosService
-        .listarAgendamentos(
-          salaId
-        )
+    const agendamentos = await agendamentosService.listarAgendamentos(salaId);
 
     res.json(agendamentos);
-
   } catch (erro) {
     console.error(erro);
     res.status(500).json({
-      erro: erro.message
+      erro: erro.message,
     });
   }
 }
 
 async function criar(req, res) {
   try {
-    const resultado = await agendamentosService.criarAgendamento(req.body, req.usuario.id, req.usuario.nome);
+    const resultado = await agendamentosService.criarAgendamento(
+      req.body,
+      req.usuario.id,
+      req.usuario.nome,
+    );
 
     res.status(201).json({
-      mensagem: 'Agendamento criado com sucesso',
-      id: resultado.id
+      mensagem: "Agendamento criado com sucesso",
+      id: resultado.id,
     });
-
   } catch (erro) {
     console.error(erro);
     res.status(400).json({
-      erro: erro.message
+      erro: erro.message,
     });
   }
 }
 
 async function cancelar(req, res) {
   try {
-
     const { id } = req.params;
     const usuarioId = req.usuario.id;
 
-    await agendamentosService.cancelarAgendamento(
-      id,
-      usuarioId
-    );
+    await agendamentosService.cancelarAgendamento(id, usuarioId);
 
     res.json({
-      mensagem: 'Agendamento cancelado com sucesso'
+      mensagem: "Agendamento cancelado com sucesso",
     });
-
   } catch (erro) {
-
     console.error(erro);
 
     res.status(400).json({
-      erro: erro.message
+      erro: erro.message,
     });
+  }
+}
 
+async function listarMeusAgendamentos(req, res) {
+  try {
+    const agendamentos = await agendamentosService.listarMeusAgendamentos(
+      req.usuario.id,
+    );
+    res.json(agendamentos);
+  } catch (erro) {
+    console.error(erro);
+    res.status(400).json({
+      erro: erro.message,
+    });
   }
 }
 
 module.exports = {
   listar,
   criar,
-  cancelar
+  cancelar,
+  listarMeusAgendamentos,
 };

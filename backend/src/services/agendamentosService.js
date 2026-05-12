@@ -1,9 +1,6 @@
-const db = require('../database/database');
+const db = require("../database/database");
 
-async function listarAgendamentos(
-  salaId
-) {
-
+async function listarAgendamentos(salaId) {
   let sql = `
     SELECT
       agendamentos.*,
@@ -11,78 +8,68 @@ async function listarAgendamentos(
     FROM agendamentos
     INNER JOIN salas
       ON salas.id = agendamentos.salaId
-  `
-  const params = []
+  `;
+  const params = [];
 
   if (salaId) {
     sql += `
       WHERE agendamentos.salaId = ?
-    `
-    params.push(salaId)
+    `;
+    params.push(salaId);
   }
 
   sql += `
     ORDER BY
       data ASC,
       horaInicio ASC
-  `
-  const agendamentos =
-    await db.all(
-      sql,
-      params
-    )
+  `;
+  const agendamentos = await db.all(sql, params);
 
-  return agendamentos
+  return agendamentos;
 }
 
 function horaValida(hora) {
-    const regex =
-        /^([01]\d|2[0-3]):([0-5]\d)$/
-    return regex.test(hora)
+  const regex = /^([01]\d|2[0-3]):([0-5]\d)$/;
+  return regex.test(hora);
 }
 
 async function criarAgendamento(dados, usuarioIdC, usuarioNomeC) {
-    const {
-        salaId,
-        titulo,
-        data,
-        horaInicio,
-        horaFim
-    } = dados;
+  const { salaId, titulo, data, horaInicio, horaFim } = dados;
 
-    console.log('Dados recebidos para criar agendamento:', dados);
-    if (!salaId || !titulo || !data || !horaInicio || !horaFim) {
-        throw new Error('Campos obrigatórios não enviados');
-    }
+  console.log("Dados recebidos para criar agendamento:", dados);
+  if (!salaId || !titulo || !data || !horaInicio || !horaFim) {
+    throw new Error("Campos obrigatórios não enviados");
+  }
 
-    if (!horaValida(horaInicio) || !horaValida(horaFim)) {
-        throw new Error(
-            'Horário inválido'
-        )
-    }
+  if (!horaValida(horaInicio) || !horaValida(horaFim)) {
+    throw new Error("Horário inválido");
+  }
 
-    const sala = await db.get(`
+  const sala = await db.get(
+    `
         SELECT * FROM salas
         WHERE id = ?
-    `, [salaId]);
+    `,
+    [salaId],
+  );
 
-    if (!sala) {
-        throw new Error('Sala não encontrada');
-    }
+  if (!sala) {
+    throw new Error("Sala não encontrada");
+  }
 
-    const agora = new Date();
-    const dataInicio = new Date(data + ' ' + horaInicio);
-    const dataFim = new Date(data + ' ' + horaFim);
+  const agora = new Date();
+  const dataInicio = new Date(data + " " + horaInicio);
+  const dataFim = new Date(data + " " + horaFim);
 
-    if (dataInicio < agora) {
-        throw new Error('Não é permitido agendar no passado');
-    }
+  if (dataInicio < agora) {
+    throw new Error("Não é permitido agendar no passado");
+  }
 
-    if (dataInicio >= dataFim) {
-        throw new Error('Horário inicial deve ser menor que o final');
-    }
+  if (dataInicio >= dataFim) {
+    throw new Error("Horário inicial deve ser menor que o final");
+  }
 
-    const sqlConflito = `
+  const sqlConflito = `
     SELECT * FROM agendamentos
     WHERE salaId = ?
     AND (
@@ -91,17 +78,15 @@ async function criarAgendamento(dados, usuarioIdC, usuarioNomeC) {
     )
    `;
 
-    const conflitos = await db.all(sqlConflito, [
-        salaId,
-        horaFim,
-        horaInicio
-    ]);
+  const conflitos = await db.all(sqlConflito, [salaId, horaFim, horaInicio]);
 
-    if (conflitos.length > 0) {
-        throw new Error(`Já existe um agendamento nesse horário para a sala ${sala.nome}`);
-    }
+  if (conflitos.length > 0) {
+    throw new Error(
+      `Já existe um agendamento nesse horário para a sala ${sala.nome}`,
+    );
+  }
 
-    const sql = `
+  const sql = `
     INSERT INTO agendamentos (
       salaId,
       titulo,
@@ -115,54 +100,66 @@ async function criarAgendamento(dados, usuarioIdC, usuarioNomeC) {
     VALUES (?, ?, ?, ?, ?, ?, ?, ?)
     `;
 
-    const resultado = await db.run(sql, [
-        salaId,
-        titulo,
-        data,
-        horaInicio,
-        horaFim,
-        usuarioIdC,
-        usuarioNomeC,
-        new Date().toISOString()
-    ]);
+  const resultado = await db.run(sql, [
+    salaId,
+    titulo,
+    data,
+    horaInicio,
+    horaFim,
+    usuarioIdC,
+    usuarioNomeC,
+    new Date().toISOString(),
+  ]);
 
-    return resultado;
+  return resultado;
 }
 
-
-
 async function cancelarAgendamento(id, usuarioIdC) {
-
-    const sqlBusca = `
+  const sqlBusca = `
     SELECT * FROM agendamentos
     WHERE id = ?
     `;
 
-    const agendamento =
-        await db.get(sqlBusca, [id]);
+  const agendamento = await db.get(sqlBusca, [id]);
 
-    if (!agendamento) {
-        throw new Error('Agendamento não encontrado');
-    }
+  if (!agendamento) {
+    throw new Error("Agendamento não encontrado");
+  }
 
-    if (agendamento.usuarioId != usuarioIdC) {
-        throw new Error(
-            'Você não pode cancelar este agendamento'
-        );
-    }
+  if (agendamento.usuarioId != usuarioIdC) {
+    throw new Error("Você não pode cancelar este agendamento");
+  }
 
-    const sqlDelete = `
+  const sqlDelete = `
     DELETE FROM agendamentos
     WHERE id = ?
     `;
 
-    await db.run(sqlDelete, [id]);
+  await db.run(sqlDelete, [id]);
 
-    return true;
+  return true;
+}
+
+async function listarMeusAgendamentos(usuarioId) {
+  const sql = `
+    SELECT
+      agendamentos.*,
+      salas.nome AS salaNome
+    FROM agendamentos
+    INNER JOIN salas
+      ON salas.id = agendamentos.salaId
+    WHERE
+      agendamentos.usuarioId = ?
+    ORDER BY
+      data ASC,
+      horaInicio ASC
+  `;
+  return await db.all(sql, [usuarioId]);
 }
 
 module.exports = {
-    listarAgendamentos,
-    criarAgendamento,
-    cancelarAgendamento
+  listarAgendamentos,
+  criarAgendamento,
+  cancelarAgendamento,
+  listarMeusAgendamentos,
 };
