@@ -60,10 +60,10 @@ Este projeto foi desenvolvido como solução para um **teste técnico para Desen
 
  O projeto contém um usuario padrão que é criado assim que o backend roda 
 
- Usuário 1:
-- Nome de Usuário: developer1
-- E-mail: developer@gmail.com
-- Senha: teste@1
+* Usuário:
+  * Nome de Usuário: developer
+  * E-mail: developer@gmail.com
+  * Senha: teste@1
 
 ##  Tecnologias Utilizadas
 
@@ -104,7 +104,7 @@ backend/
 ```text
 frontend/
 ├── src/
-│   ├── assets/
+│   |
 │   ├── boot/           # Axios e configurações globais
 │   ├── components/     # Componentes reutilizáveis
 │   ├── css/            # Estilos globais
@@ -117,7 +117,34 @@ frontend/
 └── App.vue
 ```
 
-## Como Rodar o Projeto
+# Requisitos
+
+Para executar o projeto localmente, é necessário possuir instalado:
+
+* Node.js (versão 18 ou superior)
+* Quasar CLI
+
+---
+
+# Instalação das Ferramentas
+
+## Node.js
+
+Download:
+[https://nodejs.org/pt](https://nodejs.org/pt)
+
+Verificar instalação:
+
+```bash
+node -v
+
+### Como Rodar o Projeto em localmente
+
+## *Clonar o Repositório*
+
+```sh
+git clone https://github.com/DiogoBrito05/agendamento_salas
+```
 
 ### Backend
 
