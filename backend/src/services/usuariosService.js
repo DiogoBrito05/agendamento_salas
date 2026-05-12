@@ -1,17 +1,5 @@
 const db = require("../database/database");
 
-async function listarUsuarios() {
-  const sql = `
-    SELECT
-      id,
-      nome,
-      email,
-      criadoEm
-    FROM usuarios
-    ORDER BY id DESC
-  `;
-  return await db.all(sql);
-}
 
 async function criarUsuario(dados) {
   if (!dados.nome) {
@@ -184,7 +172,6 @@ async function atualizarPerfil(usuarioId, dados) {
   return await buscarPorId(usuarioId);
 }
 module.exports = {
-  listarUsuarios,
   criarUsuario,
   deletarUsuario,
   buscarPorId,
