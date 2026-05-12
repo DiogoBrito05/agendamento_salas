@@ -16,25 +16,38 @@ Este projeto foi desenvolvido como solução para um **teste técnico para Desen
 *   Validação de credenciais
 *   Controle de acesso por token
 
-## Gerenciamento de Usuários
 
-* Listagem de usuários cadastrados
-* Exclusão de conta
-* Restrição para exclusão apenas da própria conta
-* Validação de usuários duplicados
-* Validação de e-mail
-* Validação de senha mínima
-* Validação de nome obrigatório
+## **Perfil do Usuário**
+* Visualização de dados do usuário logado
+* Alteração de:
+  * Nome
+  * E-mail
+  * Senha
+* Exclusão da própria conta
+* Persistência das informações atualizadas
+* Proteção para impedir exclusão de outros usuários
 
-### **Dashboard & Agendamentos**
-*   Listagem de salas com status em tempo real (**Disponível**, **Ocupada**, **Próximo Agendamento**).
-*   Criação de reuniões
-*   Atualização automática da interface
-*   Cancelamento de reuniões
+### **Salas**
+* Status em tempo real:
+  * Disponível
+  * Ocupada
+  * Próximo agendamento
+* Atualização automática sem recarregar página
+
 
 ### **Calendário Interativo**
-*   Visualização Mensal, Semanal e Diária.
-*   Exibição detalhada dos horários das reuniões.
+*  Visualização:
+  * Mensal
+  * Semanal
+  * Diária
+* Exibição detalhada dos horários
+* Modal com detalhes do agendamento
+* Cancelamento diretamente pelo calendário
+* Eventos passados permanecem visíveis
+* Mudança automática de cor:
+  * Azul → eventos ativos/futuros
+  * Cinza → eventos expirados
+* Separação visual entre eventos simultâneos
 
 ### **Validações de Regra de Negócio**
 *   **Conflito de Horários:** Impede duas reuniões na mesma sala no mesmo horário.
@@ -43,7 +56,7 @@ Este projeto foi desenvolvido como solução para um **teste técnico para Desen
 *   **Cancelamento Restrito:** Apenas o usuário que criou a reunião tem permissão para cancelá-la.
 
 
-## **Usuarios**
+## **Usuario Padrão**
 
  O projeto contém um usuario padrão que é criado assim que o backend roda 
 
