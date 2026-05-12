@@ -1,29 +1,22 @@
 <template>
   <q-page class="q-pa-lg">
+    <div class="row items-center justify-between q-mb-xl">
 
-    <div class="titulo-page">
-      Agenda
-    </div>
-    <div class="subtitulo-page q-mt-sm">
-      Bem-vindo!
-    </div>
-
-    <div class="q-mt-lg">
+      <div>
+        <div class="titulo-page">Agenda</div>
+        <div class="subtitulo-page q-mt-sm">Bem-vindo!</div>
+      </div>
       <q-btn
-        label="Novo Agendamento"
         color="primary"
         icon="add"
-        @click="abrirModal"
+        label="Novo Agendamento"
+        unelevated
+        @click="abrirModal()"
       />
     </div>
 
-    
     <div class="row q-col-gutter-md q-mt-lg">
-      <div
-        v-for="sala in salas"
-        :key="sala.id"
-        class="col-12 col-md-4"
-      >
+      <div v-for="sala in salas" :key="sala.id" class="col-12 col-md-4">
         <q-card class="card-padrao">
           <q-card-section>
             <div class="text-h6">
@@ -34,24 +27,20 @@
               <q-badge
                 :color="salaEstaOcupada(sala.id) ? 'negative' : 'positive'"
               >
-                {{ salaEstaOcupada(sala.id) ? 'OCUPADA' : 'DISPONÍVEL' }}
+                {{ salaEstaOcupada(sala.id) ? "OCUPADA" : "DISPONÍVEL" }}
               </q-badge>
             </div>
 
-            <div
-              v-if="proximoAgendamento(sala.id)"
-              class="q-mt-md"
-            >
-              <div class="text-subtitle2">
-                Próximo agendamento:
-              </div>
+            <div v-if="proximoAgendamento(sala.id)" class="q-mt-md">
+              <div class="text-subtitle2">Próximo agendamento:</div>
 
               <div class="text-weight-bold">
                 {{ proximoAgendamento(sala.id).titulo }}
               </div>
 
               <div>
-                {{ proximoAgendamento(sala.id).data }} às {{ proximoAgendamento(sala.id).horaInicio }}
+                {{ proximoAgendamento(sala.id).data }} às
+                {{ proximoAgendamento(sala.id).horaInicio }}
               </div>
             </div>
           </q-card-section>
@@ -67,17 +56,14 @@
     </div>
 
     <q-dialog v-model="modalAberto">
-      <q-card class="card-padrao" style="width: 550px; max-width: 90vw;">
+      <q-card class="card-padrao" style="width: 550px; max-width: 90vw">
         <q-card-section class="row items-center">
-          <div class="titulo-page">
-            Agendar uma sala
-          </div>
+          <div class="titulo-page">Agendar uma sala</div>
         </q-card-section>
 
         <q-separator />
 
         <q-card-section class="q-pa-lg">
-         
           <q-select
             v-model="form.salaId"
             :options="salas"
@@ -135,12 +121,7 @@
         </q-card-section>
 
         <q-card-actions align="right" class="q-pa-md">
-          <q-btn
-            flat
-            label="CANCELAR"
-            color="grey"
-            v-close-popup
-          />
+          <q-btn flat label="CANCELAR" color="grey" v-close-popup />
           <q-btn
             color="primary"
             text-color="white"
@@ -154,139 +135,132 @@
 </template>
 
 <script setup>
-import { onMounted, onUnmounted, ref } from 'vue'
-import { useQuasar } from 'quasar'
-import salasService from 'src/services/salas.service'
-import agendamentosService from 'src/services/agendamentos.service'
-import CalendarioAgenda from 'src/components/CalendarioAgenda.vue'
+import { onMounted, onUnmounted, ref } from "vue";
+import { useQuasar } from "quasar";
+import salasService from "src/services/salas.service";
+import agendamentosService from "src/services/agendamentos.service";
+import CalendarioAgenda from "src/components/CalendarioAgenda.vue";
 
-const salas = ref([])
-const agendamentos = ref([])
-let intervalAtualizacao = null
-const $q = useQuasar()
-const modalAberto = ref(false)
+const salas = ref([]);
+const agendamentos = ref([]);
+let intervalAtualizacao = null;
+const $q = useQuasar();
+const modalAberto = ref(false);
 const form = ref({
   salaId: null,
-  titulo: '',
-  data: '',
-  horaInicio: '',
-  horaFim: ''
-})
+  titulo: "",
+  data: "",
+  horaInicio: "",
+  horaFim: "",
+});
 
 async function carregarSalas() {
   try {
-    salas.value = await salasService.listar()
+    salas.value = await salasService.listar();
   } catch (erro) {
-    console.error(erro)
+    console.error(erro);
   }
 }
 
 async function carregarAgendamentos() {
   try {
-    agendamentos.value = await agendamentosService.listar()
+    agendamentos.value = await agendamentosService.listar();
   } catch (erro) {
-    console.error(erro)
+    console.error(erro);
   }
 }
 
 async function cancelarAgendamento(id) {
   try {
-    await agendamentosService.cancelar(id)
-    await carregarAgendamentos()
+    await agendamentosService.cancelar(id);
+    await carregarAgendamentos();
     $q.notify({
-      type: 'positive',
-      message: 'Agendamento cancelado'
-    })
+      type: "positive",
+      message: "Agendamento cancelado",
+    });
   } catch (erro) {
-    console.error(erro)
+    console.error(erro);
     $q.notify({
-      type: 'negative',
-      message: erro.response?.data?.erro || 'Erro ao cancelar'
-    })
+      type: "negative",
+      message: erro.response?.data?.erro || "Erro ao cancelar",
+    });
   }
 }
 
 function abrirModal() {
-  modalAberto.value = true
+  modalAberto.value = true;
 }
 
 async function salvarAgendamento() {
   try {
     if (form.value.horaInicio >= form.value.horaFim) {
       $q.notify({
-        type: 'negative',
-        message: 'Hora final deve ser maior'
-      })
-      return
+        type: "negative",
+        message: "Hora final deve ser maior",
+      });
+      return;
     }
 
-    await agendamentosService.criar(form.value)
-    modalAberto.value = false
-    await carregarAgendamentos()
+    await agendamentosService.criar(form.value);
+    modalAberto.value = false;
+    await carregarAgendamentos();
     $q.notify({
-      type: 'positive',
-      message: 'Agendamento criado com sucesso'
-    })
+      type: "positive",
+      message: "Agendamento criado com sucesso",
+    });
 
     form.value = {
       salaId: null,
-      titulo: '',
-      data: '',
-      horaInicio: '',
-      horaFim: ''
-    }
+      titulo: "",
+      data: "",
+      horaInicio: "",
+      horaFim: "",
+    };
   } catch (erro) {
-    console.error(erro)
+    console.error(erro);
     $q.notify({
-      type: 'negative',
-      message: erro.response?.data?.erro || 'Erro ao criar agendamento'
-    })
+      type: "negative",
+      message: erro.response?.data?.erro || "Erro ao criar agendamento",
+    });
   }
 }
 
 function salaEstaOcupada(salaId) {
-  const agora = new Date()
-  return agendamentos.value.some(agendamento => {
-    const inicio = new Date(`${agendamento.data}T${agendamento.horaInicio}`)
-    const fim = new Date(`${agendamento.data}T${agendamento.horaFim}`)
-    return (
-      agendamento.salaId === salaId &&
-      agora >= inicio &&
-      agora <= fim
-    )
-  })
+  const agora = new Date();
+  return agendamentos.value.some((agendamento) => {
+    const inicio = new Date(`${agendamento.data}T${agendamento.horaInicio}`);
+    const fim = new Date(`${agendamento.data}T${agendamento.horaFim}`);
+    return agendamento.salaId === salaId && agora >= inicio && agora <= fim;
+  });
 }
 
 function proximoAgendamento(salaId) {
-  const agora = new Date()
-  const futuros = agendamentos.value.filter(agendamento => {
-    const inicio = new Date(`${agendamento.data}T${agendamento.horaInicio}`)
-    return (
-      agendamento.salaId === salaId &&
-      inicio > agora
-    )
-  })
+  const agora = new Date();
+  const futuros = agendamentos.value.filter((agendamento) => {
+    const inicio = new Date(`${agendamento.data}T${agendamento.horaInicio}`);
+    return agendamento.salaId === salaId && inicio > agora;
+  });
 
   futuros.sort((a, b) => {
     return (
       new Date(`${a.data}T${a.horaInicio}`) -
       new Date(`${b.data}T${b.horaInicio}`)
-    )
-  })
+    );
+  });
 
-  return futuros[0]
+  return futuros[0];
 }
 
 onMounted(() => {
-  carregarSalas()
-  carregarAgendamentos()
+  carregarSalas();
+  carregarAgendamentos();
   intervalAtualizacao = setInterval(() => {
-    carregarSalas()
-    carregarAgendamentos()
-  }, 5000)
-})
+    carregarSalas();
+    carregarAgendamentos();
+  }, 5000);
+});
 
 onUnmounted(() => {
-  clearInterval(intervalAtualizacao)
-})
+  clearInterval(intervalAtualizacao);
+});
 </script>
