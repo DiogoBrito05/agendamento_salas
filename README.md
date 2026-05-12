@@ -137,6 +137,7 @@ Verificar instalação:
 
 ```bash
 node -v
+```
 
 ### Como Rodar o Projeto em localmente
 
