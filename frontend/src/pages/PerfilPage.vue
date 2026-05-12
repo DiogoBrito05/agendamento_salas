@@ -2,17 +2,13 @@
   <q-page class="q-pa-lg">
 
     <div class="titulo-page">
-      Meu Perfil
-    </div>
-
-    <div class="subtitulo-page q-mt-sm">
       Gerencie suas informações.
     </div>
 
     <q-card class="card-padrao q-mt-xl">
       <q-card-section>
         <div class="text-h6 text-weight-bold">
-          Informações do Usuário
+         Informações do usuário
         </div>
       </q-card-section>
 
