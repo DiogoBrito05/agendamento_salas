@@ -6,6 +6,7 @@ Sistema web desenvolvido para o gerenciamento de salas de reunião corporativas,
 
 Este projeto foi desenvolvido como solução para um **teste técnico para Desenvolvedor Fullstack (Vue 3, Quasar e Node.js)**, contemplando:
 
+---
 ##  Funcionalidades Implementadas
 
 ### **Login de Usuário**
@@ -17,7 +18,7 @@ Este projeto foi desenvolvido como solução para um **teste técnico para Desen
 *   Controle de acesso por token
 
 
-## **Perfil do Usuário**
+### **Perfil do Usuário**
 * Visualização de dados do usuário logado
 * Alteração de:
   * Nome
@@ -56,7 +57,7 @@ Este projeto foi desenvolvido como solução para um **teste técnico para Desen
 *   **Cancelamento Restrito:** Apenas o usuário que criou a reunião tem permissão para cancelá-la.
 
 
-## **Usuario Padrão**
+### **Usuario Padrão**
 
  O projeto contém um usuario padrão que é criado assim que o backend roda 
 
@@ -65,6 +66,7 @@ Este projeto foi desenvolvido como solução para um **teste técnico para Desen
   * E-mail: developer@gmail.com
   * Senha: teste@1
 
+---
 ##  Tecnologias Utilizadas
 
 ### **Frontend**
@@ -84,6 +86,7 @@ Este projeto foi desenvolvido como solução para um **teste técnico para Desen
 ### **Banco de Dados**
 *   **SQLite**
 
+---
 ## Estrutura do Projeto
 
 ### **Backend**
@@ -98,7 +101,7 @@ backend/
 │   ├── services/       # Regras de negócio
 │  
 └── server.js
-````
+```
 
 ### **Frontend**
 ```text
@@ -117,7 +120,8 @@ frontend/
 └── App.vue
 ```
 
-# Requisitos
+--- 
+## Requisitos
 
 Para executar o projeto localmente, é necessário possuir instalado:
 
@@ -128,7 +132,7 @@ Para executar o projeto localmente, é necessário possuir instalado:
 
 # Instalação das Ferramentas
 
-## Node.js
+### **Node.js**
 
 Download:
 [https://nodejs.org/pt](https://nodejs.org/pt)
@@ -138,16 +142,16 @@ Verificar instalação:
 ```bash
 node -v
 ```
+---
+## Como Rodar o Projeto localmente
 
-### Como Rodar o Projeto em localmente
-
-## *Clonar o Repositório*
+### **Clonar o Repositório**
 
 ```sh
 git clone https://github.com/DiogoBrito05/agendamento_salas
 ```
 
-### Backend
+### **Backend**
 
 * Entrar na pasta
 ```sha
@@ -166,7 +170,7 @@ npm run dev
 http://localhost:3000
 ```
 
-### Frontend
+### **Frontend**
 
 * Entrar na pasta
 ```sha
