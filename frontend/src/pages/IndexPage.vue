@@ -39,7 +39,7 @@
               </div>
 
               <div>
-                {{ proximoAgendamento(sala.id).data }} às
+                {{ formatarData(proximoAgendamento(sala.id).data) }} às
                 {{ proximoAgendamento(sala.id).horaInicio }}
               </div>
             </div>
@@ -140,6 +140,8 @@ import { useQuasar } from "quasar";
 import salasService from "src/services/salas.service";
 import agendamentosService from "src/services/agendamentos.service";
 import CalendarioAgenda from "src/components/CalendarioAgenda.vue";
+import { formatarData } from "src/utils/formatadores";
+
 
 const salas = ref([]);
 const agendamentos = ref([]);

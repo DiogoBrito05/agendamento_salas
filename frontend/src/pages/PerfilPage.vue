@@ -94,6 +94,7 @@ import { useRouter } from "vue-router";
 import { useQuasar } from "quasar";
 import agendamentosService from "src/services/agendamentos.service";
 import usuariosService from "src/services/usuarios.service";
+import { formatarData } from "src/utils/formatadores";
 
 const columns = [
   {
@@ -109,10 +110,10 @@ const columns = [
     align: "left",
   },
   {
-    name: "data",
-    label: "Data",
-    field: "data",
-    align: "left",
+    name: 'data',
+    label: 'Data',
+    field: row => formatarData( row.data),
+    align: 'left'
   },
   {
     name: "horario",

@@ -19,7 +19,7 @@
 
         <div class="q-mb-md">
           <q-icon name="event" class="q-mr-sm" />
-          {{ agendamentoSelecionado?.data }}
+          {{ formatarData(agendamentoSelecionado?.data) }}
         </div>
 
         <div class="q-mb-md">
@@ -53,6 +53,7 @@ import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from '@fullcalendar/timegrid'
 import interactionPlugin from '@fullcalendar/interaction'
 import ptBrLocale from '@fullcalendar/core/locales/pt-br'
+import { formatarData} from "src/utils/formatadores";
 
 const props = defineProps({
   agendamentos: {
