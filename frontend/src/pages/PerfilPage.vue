@@ -71,10 +71,10 @@
         hide-pagination
         :rows-per-page-options="[0]"
       >
-        
         <template #body-cell-acoes="props">
           <q-td align="right">
             <q-btn
+              v-if="!agendamentoPassado(props.row)"
               color="negative"
               icon="delete"
               label="Cancelar"
@@ -172,6 +172,11 @@ async function cancelarAgendamento(id) {
       message: erro.response?.data?.erro || "Erro ao cancelar",
     });
   }
+}
+
+function agendamentoPassado(agendamento) {
+  const fim = new Date(`${agendamento.data}T${agendamento.horaFim}`);
+  return fim < new Date();
 }
 
 async function salvarAlteracoes() {
