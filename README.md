@@ -116,6 +116,7 @@ frontend/
 │   ├── router/         # Rotas do frontend
 │   ├── services/       # Comunicação com API
 │   ├── stores/         # Estado global
+|   |__ utils/          # Formatações
 │   
 └── App.vue
 ```
