@@ -16,10 +16,10 @@ const routes = [
         path: "",
         component: () => import("pages/IndexPage.vue"),
       },
-  
+
       {
-        path: "/usuarios",
-        component: () => import("pages/UsuariosPage.vue"),
+        path: "/perfil",
+        component: () => import("pages/PerfilPage.vue"),
       },
     ],
   },

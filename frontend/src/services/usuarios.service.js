@@ -1,9 +1,5 @@
 import { api } from "src/boot/axios";
 
-async function listar() {
-  const response = await api.get("/usuarios/lista");
-  return response.data;
-}
 
 async function criar(dados) {
   const response = await api.post("/usuarios", dados);
@@ -15,8 +11,19 @@ async function deletar(id) {
   return response.data;
 }
 
+async function buscarUsuarioLogado() {
+  const response = await api.get("/usuarios/me");
+  return response.data;
+}
+
+async function atualizarPerfil(dados) {
+  const response = await api.put("/usuarios/update", dados);
+  return response.data;
+}
+
 export default {
-  listar,
   criar,
   deletar,
+  buscarUsuarioLogado,
+  atualizarPerfil
 };

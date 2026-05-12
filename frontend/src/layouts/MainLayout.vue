@@ -52,19 +52,18 @@
           <q-item-section> Agenda </q-item-section>
         </q-item>
 
-        <q-item
-          clickable
-          to="/usuarios"
-          active-class="bg-blue-1 text-primary"
-          class="rounded-borders q-mt-sm"
-        >
-          <q-item-section avatar>
-            <q-icon name="group" />
-          </q-item-section>
-          <q-item-section> Usuários </q-item-section>
-        </q-item>
-
-        <q-separator class="q-my-md" />
+              <q-item
+                clickable
+                to="/perfil"
+              >
+                <q-item-section avatar>
+                  <q-icon name="person" />
+                </q-item-section>
+                <q-item-section>
+                  Perfil
+                </q-item-section>
+              </q-item>
+            <q-separator class="q-my-md" />
 
         <q-item clickable @click="logout" class="rounded-borders text-negative">
           <q-item-section avatar>
